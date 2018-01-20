@@ -34,7 +34,21 @@ int main()
 			}
 		}
 
-		printf("\nSTATE: %d\n", virtual_machine.GetState());
+		int state = virtual_machine.GetState();
+
+		printf("\nSTATE: %d\n", state);
+
+		if (state == 1)
+		{
+			shape.setFillColor(sf::Color::Red);
+			shape.move(-0.01f, 0.0f);
+		}
+
+		else if (state == 2)
+		{
+			shape.setFillColor(sf::Color::Blue);
+			shape.move(0.01f, 0.0f);
+		}
 
 		window.clear();
 		window.draw(shape);

@@ -306,7 +306,7 @@ void VirtualM::Machine()
 		GSTORE, state_address,
 		CONST_I32, state_address,
 		GLOAD,
-		CONST_I32, 10,
+		CONST_I32, 10000,
 		EQ_I32,
 		JMPF, 7,
 
@@ -320,7 +320,7 @@ void VirtualM::Machine()
 		GSTORE, state_address,
 		CONST_I32, state_address,
 		GLOAD,
-		CONST_I32, 100,
+		CONST_I32, 100000,
 		EQ_I32,
 		JMPF, 26,
 
