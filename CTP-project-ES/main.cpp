@@ -17,27 +17,31 @@ int main()
 	shape.setFillColor(sf::Color::Red);
 	shape.setPosition(400, 200);
 
-	//std::unique_ptr<VirtualM> virtual_machine = std::make_unique<VirtualM>();
-
 	VirtualM virtual_machine;
 
 	std::thread t1(ThreadVM, &virtual_machine);
+
+	t1.detach();
 
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (event.type == sf::Event::Closed))
+			{
 				window.close();
+			}
 		}
+
+		printf("\nSTATE: %d\n", virtual_machine.GetState());
 
 		window.clear();
 		window.draw(shape);
 		window.display();
 	}
 
-	t1.join();
+	//t1.join();
 
 	return 0;
 }
