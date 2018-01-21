@@ -1,27 +1,44 @@
 #include <SFML/Graphics.hpp>
 
 #include "VirtualM.h"
+#include "FSMBehaviour.h"
 
 #include <memory>
+#include <vector>
 #include <thread>
 #include <string>
 #include <iostream>
 
-void ThreadVM(VirtualM* v_m);
+void ThreadVM(VirtualM* v_m, int* _code);
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "CTP Virtual Machine");
 
 	sf::CircleShape shape(20.f);
-	shape.setFillColor(sf::Color::Red);
+	shape.setFillColor(sf::Color::Yellow);
 	shape.setPosition(400, 200);
 
-	VirtualM virtual_machine;
+	std::vector<int*> behaviours;
+	std::vector<VirtualM*> virtual_machines;
 
-	std::thread t1(ThreadVM, &virtual_machine);
+	behaviours.push_back(counting_FSM);
+	behaviours.push_back(counting_FSM2);	
 
-	t1.detach();
+	for (int i = 0; i < behaviours.size(); i++)
+	{
+		VirtualM* virtual_machine = new VirtualM;
+
+		virtual_machine->SetID(i);
+
+		virtual_machines.push_back(virtual_machine);
+
+		//std::thread t1(ThreadVM, &virtual_machines[i], behaviours[i]);
+
+		std::thread t1(&VirtualM::Machine, virtual_machines[i], behaviours[i]);
+
+		t1.detach();
+	}
 
 	while (window.isOpen())
 	{
@@ -31,23 +48,90 @@ int main()
 			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) || (event.type == sf::Event::Closed))
 			{
 				window.close();
+
+				for (int i = 0; i < virtual_machines.size(); i++)
+				{
+					virtual_machines[i]->delVM(virtual_machines[i]->GetVM());					
+				}
+
+				virtual_machines.clear();
+				behaviours.clear();
 			}
 		}
 
-		int state = virtual_machine.GetState();
-
-		printf("\nSTATE: %d\n", state);
-
-		if (state == 1)
+		for (int i = 0; i < virtual_machines.size(); i++)
 		{
-			shape.setFillColor(sf::Color::Red);
-			shape.move(-0.01f, 0.0f);
-		}
+			int state = virtual_machines[i]->GetState();
+			int id = virtual_machines[i]->GetID();
 
-		else if (state == 2)
-		{
-			shape.setFillColor(sf::Color::Blue);
-			shape.move(0.01f, 0.0f);
+			printf("\n\nVM%d state: %d\n\n", id, state);
+
+			switch (i)
+			{
+
+			case 0:				
+
+				switch (state)
+				{
+				case 1:
+
+					shape.move(-0.01f, 0.0f);
+					break;
+
+				case 2:
+
+					shape.move(0.01f, 0.0f);
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+
+			case 1:
+
+				switch (state)
+				{
+				case 1:
+
+					if (shape.getFillColor() != sf::Color::Red)
+					{
+						shape.setFillColor(sf::Color::Red);
+					}
+
+					break;
+
+				case 2:
+
+					if (shape.getFillColor() != sf::Color::Blue)
+					{
+						shape.setFillColor(sf::Color::Blue);
+					}
+
+					break;
+
+				case 3:
+
+					if (shape.getFillColor() != sf::Color::Magenta)
+					{
+						shape.setFillColor(sf::Color::Magenta);
+					}
+
+					break;
+
+				default:
+
+					if (shape.getFillColor() != sf::Color::Yellow)
+					{
+						shape.setFillColor(sf::Color::Yellow);
+					}
+					break;
+				}
+
+			default:
+				break;
+			}
 		}
 
 		window.clear();
@@ -60,7 +144,7 @@ int main()
 	return 0;
 }
 
-void ThreadVM(VirtualM* v_m)
+void ThreadVM(VirtualM* v_m, int* _code)
 {
-	v_m->Machine();
+	v_m->Machine(_code);
 }

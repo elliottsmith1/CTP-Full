@@ -28,30 +28,20 @@ int VirtualM::GetState()
 	return state;
 }
 
-enum {
-	ADD_I32 = 1,    // int add
-	SUB_I32 = 2,    // int sub
-	MUL_I32 = 3,    // int mul
-	LT_I32 = 4,     // int less than
-	GT_I32 = 5,		// int greater than
-	EQ_I32 = 6,     // int equal
-	JMP = 7,        // branch
-	JMPT = 8,       // branch if true
-	JMPF = 9,       // branch if false
-	CONST_I32 = 10,  // push constant integer
-	LOAD = 11,      // load from local
-	GLOAD = 12,     // load from global
-	S_LOAD = 13,	// load state
-	S_STORE = 14,	// store state
-	STORE = 15,     // store in local
-	GSTORE = 16,    // store in global memory
-	PRINT = 17,     // print value on top of the stack
-	POP = 18,       // throw away top of the stack
-	HALT = 19,      // stop program
-	CALL = 20,      // call procedure
-	RET = 21,      // return from procedure
-	PAUSE = 22		// pause program
-};
+int VirtualM::GetID()
+{
+	return machine_id;
+}
+
+VM * VirtualM::GetVM()
+{
+	return vm;
+}
+
+void VirtualM::SetID(int _id)
+{
+	machine_id = _id;
+}
 
 void VirtualM::Run(VM* vm) 
 {
@@ -68,7 +58,7 @@ void VirtualM::Run(VM* vm)
 			v = NCODE(vm);   // get next value from code ...
 			PUSH(vm, v);     // ... and move it on top of the stack
 
-			printf("\npushing constant int (%d)\n", v);
+			printf("\nVM# %d: pushing constant int (%d)\n", machine_id, v);
 
 			break;
 
@@ -77,7 +67,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, a + b);    // ... add those two values and put result on top of the stack
 
-			printf("\nadding %d + %d (%d)\n", a, b, (a + b));
+			printf("\nVM# %d: adding %d + %d (%d)\n", machine_id, a, b, (a + b));
 
 			break;
 
@@ -86,7 +76,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, a - b);    // ... subtract those two values and put result on top of the stack
 
-			printf("\nsubtracting %d - %d (%d)\n", a, b, (a - b));
+			printf("\nVM# %d: subtracting %d - %d (%d)\n", machine_id, a, b, (a - b));
 
 			break;
 
@@ -95,7 +85,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, a * b);    // ... multiply those two values and put result on top of the stack
 
-			printf("\nmultiplying %d * %d (%d)\n", a, b, (a*b));
+			printf("\nVM# %d: multiplying %d * %d (%d)\n", machine_id, a, b, (a*b));
 
 			break;
 
@@ -104,7 +94,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, (a<b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\n%d less than %d?", a, b);
+			printf("\nVM# %d: %d less than %d?", machine_id, a, b);
 
 			if (a < b)
 			{
@@ -122,7 +112,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, (a>b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\n%d greater than %d?", a, b);
+			printf("\nVM# %d: %d greater than %d?", machine_id, a, b);
 
 			if (a > b)
 			{
@@ -140,7 +130,7 @@ void VirtualM::Run(VM* vm)
 			a = POP(vm);        // ... then get first value from top of the stack ...
 			PUSH(vm, (a == b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\n%d equal to %d?", a, b);
+			printf("\nVM# %d: %d equal to %d?", machine_id, a, b);
 
 			if (a == b)
 			{
@@ -156,7 +146,7 @@ void VirtualM::Run(VM* vm)
 		case JMP:
 			vm->pc = NCODE(vm);  // unconditionaly jump with program counter to provided address
 
-			printf("\jump to opcode instruction: %d\n", NCODE(vm));
+			printf("\nVM# %d: jump to opcode instruction: %d\n", machine_id, NCODE(vm));
 
 			break;
 
@@ -166,7 +156,7 @@ void VirtualM::Run(VM* vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\jump true\n opcode: %d\n", addr);
+				printf("\nVM# %d: jump true\nopcode: %d\n", machine_id, addr);
 			}
 
 			break;
@@ -177,7 +167,7 @@ void VirtualM::Run(VM* vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\jump false\n opcode: %d\n", addr);
+				printf("\nVM# %d: jump false\nopcode: %d\n", machine_id, addr);
 			}
 
 			break;
@@ -186,14 +176,14 @@ void VirtualM::Run(VM* vm)
 			offset = NCODE(vm);     // get next value from code to identify local variables offset start on the stack
 			PUSH(vm, vm->stack[vm->fp + offset]); // ... put on the top of the stack variable stored relatively to frame pointer
 
-			printf("\nlocal load\n");
+			printf("\nVM# %d: local load\n", machine_id);
 
 			break;
 
 		case S_LOAD:                 // load state
 			PUSH(vm, state); // ... push current state
 
-			printf("\npushing current state (%d)\n", state);
+			printf("\nVM# %d: pushing current state (%d)\n", machine_id, state);
 
 			break;
 
@@ -202,7 +192,7 @@ void VirtualM::Run(VM* vm)
 			offset = NCODE(vm);     // ... get the relative pointer address from code ...
 			vm->locals[vm->fp + offset] = v;  // ... and store value at address received relatively to frame pointer
 
-			printf("\nstore locally\n");
+			printf("\nVM# %d: store locally\n", machine_id);
 
 			break;
 
@@ -210,7 +200,7 @@ void VirtualM::Run(VM* vm)
 			v = POP(vm);            // get value from top of the stack ...
 			state = v;
 
-			printf("\nsaving state (%d)\n", v);
+			printf("\nVM# %d: saving state (%d)\n", machine_id, v);
 
 			break;
 
@@ -219,7 +209,7 @@ void VirtualM::Run(VM* vm)
 			v = vm->locals[addr];         // ... load value from memory of the provided addres ...
 			PUSH(vm, v);                // ... and put that value on top of the stack
 
-			printf("\nload global\nvalue: %d\naddress: %d\n", v, addr);
+			printf("\nVM# %d: load global\nvalue: %d\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -228,7 +218,7 @@ void VirtualM::Run(VM* vm)
 			addr = NCODE(vm);           // ... get pointer address from code ...
 			vm->locals[addr] = v;         // ... and store value at address received
 
-			printf("\nstore global\nvalue: %d\naddress: %d\n", v, addr);
+			printf("\nVM# %d: store global\nvalue: %d\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -242,7 +232,7 @@ void VirtualM::Run(VM* vm)
 			vm->fp = vm->sp;  // ... set new frame pointer ...
 			vm->pc = addr;    // ... move instruction pointer to target procedure address
 
-			printf("\nfunction call\n");
+			printf("\nVM# %d: function call\n", machine_id);
 
 			break;
 
@@ -255,27 +245,27 @@ void VirtualM::Run(VM* vm)
 			vm->sp -= argc;     // ... discard all of the args left ...
 			PUSH(vm, rval);     // ... leave return value on top of the stack
 
-			printf("\nfunction return\n");
+			printf("\nVM# %d: function return\n", machine_id);
 
 			break;
 
 		case POP:
 			--vm->sp;      // throw away value at top of the stack
 
-			printf("\nthrowing away top of stack\n");
+			printf("\nVM# %d: throwing away top of stack\n", machine_id);
 
 			break;
 
 		case PRINT:
 			v = POP(vm);        // pop value from top of the stack ...
-			printf("\nPrinting top of stack: %d\n", v);  // ... and print it					
+			printf("\nVM# %d: Printing top of stack: %d\n", machine_id, v);  // ... and print it					
 
 			break;
 
 		case PAUSE:
 			do
 			{
-				printf("\n\nPaused. Press enter to continue.\n"); // pause until enter is pressed
+				printf("\n\nVM# %d: Paused. Press enter to continue.\n", machine_id); // pause until enter is pressed
 			} while (getchar() != '\n');
 
 			break;
@@ -287,62 +277,13 @@ void VirtualM::Run(VM* vm)
 	} while (1);
 }
 
-void VirtualM::Machine()
+void VirtualM::Machine(int* _code)
 {
-	const int state_address = 0;
-	int program[] = {
-
-		//start - set state value to 1
-		CONST_I32, 1,
-		GSTORE, state_address,
-
-		//state 1 - adding to 10
-		CONST_I32, 1,
-		S_STORE,
-		CONST_I32, state_address,
-		GLOAD,
-		CONST_I32, 1,
-		ADD_I32,
-		GSTORE, state_address,
-		CONST_I32, state_address,
-		GLOAD,
-		CONST_I32, 10000,
-		EQ_I32,
-		JMPF, 7,
-
-		//state 2 - adding to 100
-		CONST_I32, 2,
-		S_STORE,
-		CONST_I32, state_address,
-		GLOAD,
-		CONST_I32, 10,
-		ADD_I32,
-		GSTORE, state_address,
-		CONST_I32, state_address,
-		GLOAD,
-		CONST_I32, 100000,
-		EQ_I32,
-		JMPF, 26,
-
-		//restart
-		CONST_I32, 1,
-		JMP, 0,
-
-		//end loop		
-		S_LOAD,
-		PRINT,
-		//PAUSE,
-		HALT
-
-	};
-
 	// initialize virtual machine
-	VM* vm = newVM(program,   // program to execute  
+	vm = newVM(_code,   // program to execute  
 		0,    // start address of main function
 		1);    // locals to be reserved
+	
 	Run(vm);
-
-	//delete vm
-	delVM(vm);
 }
 

@@ -156,6 +156,7 @@
     <ClCompile Include="VirtualM.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FSMBehaviour.h" />
     <ClInclude Include="VirtualM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

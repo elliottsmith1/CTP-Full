@@ -26,5 +26,8 @@
     <ClInclude Include="VirtualM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FSMBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
