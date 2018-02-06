@@ -15,16 +15,20 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "CTP Virtual Machine");
 
+	//AI visual representation
 	sf::CircleShape shape(20.f);
 	shape.setFillColor(sf::Color::Yellow);
 	shape.setPosition(400, 200);
 
+	//FSM programs
 	std::vector<int*> behaviours;
+	//Virtual machines
 	std::vector<VirtualM*> virtual_machines;
 
 	behaviours.push_back(counting_FSM);
 	behaviours.push_back(counting_FSM2);	
 
+	//For every FSM, create a virtual machine to run it
 	for (int i = 0; i < behaviours.size(); i++)
 	{
 		VirtualM* virtual_machine = new VirtualM;
@@ -33,8 +37,7 @@ int main()
 
 		virtual_machines.push_back(virtual_machine);
 
-		//std::thread t1(ThreadVM, &virtual_machines[i], behaviours[i]);
-
+		//each VM runs on own thread
 		std::thread t1(&VirtualM::Machine, virtual_machines[i], behaviours[i]);
 
 		t1.detach();
@@ -69,6 +72,7 @@ int main()
 			switch (i)
 			{
 
+			//FSM 1
 			case 0:				
 
 				switch (state)
@@ -89,6 +93,7 @@ int main()
 
 				break;
 
+			//FSM 2
 			case 1:
 
 				switch (state)
@@ -138,8 +143,6 @@ int main()
 		window.draw(shape);
 		window.display();
 	}
-
-	//t1.join();
 
 	return 0;
 }
