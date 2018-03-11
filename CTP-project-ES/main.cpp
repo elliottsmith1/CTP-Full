@@ -2,6 +2,7 @@
 
 #include "VirtualM.h"
 #include "FSMBehaviour.h"
+#include "MapCreator.h"
 
 #include <memory>
 #include <vector>
@@ -19,6 +20,10 @@ int main()
 	sf::CircleShape shape(20.f);
 	shape.setFillColor(sf::Color::Yellow);
 	shape.setPosition(400, 200);
+
+	MapCreator* map_creator = new MapCreator;
+
+	map_creator->SpawnMap();
 
 	//FSM programs
 	std::vector<int*> behaviours;
@@ -139,8 +144,15 @@ int main()
 			}
 		}
 
-		window.clear();
+		window.clear();		
+
+		for (int i = 0; i < map_creator->GetMapSize(); i++)
+		{
+			window.draw(map_creator->GetTile(i));
+		}
+
 		window.draw(shape);
+
 		window.display();
 	}
 
