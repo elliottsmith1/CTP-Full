@@ -56,9 +56,7 @@ public:
 	int GetID();
 	VM* GetVM();
 
-	void SetID(int _id);
-
-	
+	void SetID(int _id);	
 
 private:
 

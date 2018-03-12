@@ -1,7 +1,3 @@
-#include <stdio.h> 
-#include <stdlib.h>
-#include <time.h>
-
 #include "MapCreator.h"
 
 void MapCreator::SpawnMap()
@@ -18,7 +14,7 @@ void MapCreator::SpawnMap()
 			sf::RectangleShape shape;
 			shape.setSize(sf::Vector2f(20, 20));
 			shape.setOutlineColor(sf::Color::Black);
-			shape.setOutlineThickness(2);
+			shape.setOutlineThickness(1);
 			shape.setFillColor(sf::Color::Green);
 			shape.setPosition(width, height);
 
@@ -29,11 +25,37 @@ void MapCreator::SpawnMap()
 		height += 20.0f;
 		width = 0.0f;
 	}
+	SpawnFood();
+}
 
-	int random = rand() % map_tiles.size();
+void MapCreator::SpawnFood()
+{
+	current_food_id = rand() % map_tiles.size();
 
-	map_tiles[random].setFillColor(sf::Color::Red);
-	current_food = map_tiles[random];
+	current_food.setFillColor(sf::Color::Green);
+
+	map_tiles[current_food_id].setFillColor(sf::Color::Red);
+	current_food = map_tiles[current_food_id];
+}
+
+bool MapCreator::CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2)
+{
+	if (object1.getGlobalBounds().intersects(object2.getGlobalBounds()))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool MapCreator::CheckFood(sf::RectangleShape object1)
+{
+	if (CheckCollision(object1, current_food))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 int MapCreator::GetMapSize()

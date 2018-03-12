@@ -26,12 +26,12 @@ int counting_FSM[] = {
 	CONST_I32, counting_address,
 	GLOAD,
 	//check if equal to max
-	CONST_I32, 5000,
+	CONST_I32, 5,
 	EQ_I32,
 	//if not yet reached then back to start
 	JMPF, 7,
 
-	//state 2 - adding by 10
+	//state 2 - adding by 1
 	//set state to 2
 	CONST_I32, 2,
 	S_STORE,
@@ -47,19 +47,18 @@ int counting_FSM[] = {
 	CONST_I32, counting_address,
 	GLOAD,
 	//check if equal to max
-	CONST_I32, 10000,
+	CONST_I32, 10,
 	EQ_I32,
 	//keep going until reached
 	JMPF, 26,
 
-	//restart back at beggining 
-	CONST_I32, 1,
-	JMP, 0,
+	////restart back at beggining 
+	//CONST_I32, 1,
+	//JMP, 0,
 
 	//end loop		
 	S_LOAD,
 	PRINT,
-	PAUSE,
 	HALT
 }; 
 
@@ -86,7 +85,7 @@ int counting_FSM2[] = {
 	CONST_I32, counting_address,
 	GLOAD,
 	//check if equal to max
-	CONST_I32, 3000,
+	CONST_I32, 5,
 	EQ_I32,
 	//if not yet reached then back to start
 	JMPF, 7,
@@ -98,7 +97,7 @@ int counting_FSM2[] = {
 	//get count
 	CONST_I32, counting_address,
 	GLOAD,
-	//add 10
+	//add 1
 	CONST_I32, 1,
 	ADD_I32,
 	//store count
@@ -107,7 +106,7 @@ int counting_FSM2[] = {
 	CONST_I32, counting_address,
 	GLOAD,
 	//check if equal to max
-	CONST_I32, 6000,
+	CONST_I32, 10,
 	EQ_I32,
 	//keep going until reached
 	JMPF, 26,
@@ -119,7 +118,7 @@ int counting_FSM2[] = {
 	//get count
 	CONST_I32, counting_address,
 	GLOAD,
-	//add 10
+	//add 1
 	CONST_I32, 1,
 	ADD_I32,
 	//store count
@@ -128,18 +127,17 @@ int counting_FSM2[] = {
 	CONST_I32, counting_address,
 	GLOAD,
 	//check if equal to max
-	CONST_I32, 9000,
+	CONST_I32, 15,
 	EQ_I32,
 	//keep going until reached
 	JMPF, 45,
 
-	//restart back at beggining 
-	CONST_I32, 1,
-	JMP, 0,
+	////restart back at beggining 
+	//CONST_I32, 1,
+	//JMP, 0,
 
 	//end loop		
 	S_LOAD,
-	PRINT,
-	PAUSE,
+	PRINT,	
 	HALT
 };
