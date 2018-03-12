@@ -9,6 +9,7 @@
 
 #include "MapCreator.h"
 #include "VirtualM.h"
+#include "IntelligenceEntity.h"
 
 class Application
 {
@@ -27,7 +28,7 @@ public:
 	int GetGameObjectNum();
 
 private:
-	sf::RectangleShape entity_shape;
+	IntelligenceEntity* entity;
 	MapCreator* map_creator;
 	std::vector<sf::RectangleShape*> game_objects;
 

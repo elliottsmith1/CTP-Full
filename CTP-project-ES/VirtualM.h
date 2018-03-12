@@ -1,3 +1,7 @@
+#include <stdio.h> 
+#include <stdlib.h>
+
+#include "EntityStats.h"
 
 #define PUSH(vm, v) vm->stack[++vm->sp] = v // push value on top of the stack
 #define POP(vm)     vm->stack[vm->sp--]     // pop value from top of the stack
@@ -34,21 +38,22 @@ enum {
 	HALT = 19,      // stop program
 	CALL = 20,      // call procedure
 	RET = 21,       // return from procedure
-	PAUSE = 22		// pause program
+	PAUSE = 22,		// pause program
+	F_LOAD = 23		//load food value
 };
 
 class VirtualM
 {
 public:
-	VirtualM() = default;
-	~VirtualM() = default;
+	VirtualM();
+	~VirtualM();
 
 	void Machine(int* _code);
 	void Run(VM* vm);
 
-	VM* newVM(int* code,    // pointer to table containing a bytecode to be executed  
-		int pc,             // address of instruction to be invoked as first one - entrypoint/main func
-		int datasize);
+	VM* newVM(int* _code,    // pointer to table containing a bytecode to be executed  
+		int _pc,             // address of instruction to be invoked as first one - entrypoint/main func
+		int _datasize);
 
 	void delVM(VM* vm);
 
@@ -56,6 +61,7 @@ public:
 	int GetID();
 	VM* GetVM();
 
+	void SetStats(EntityStats* _stats);
 	void SetID(int _id);	
 
 private:
@@ -65,6 +71,8 @@ private:
 	int state = 0;
 	int stack_size = 100;
 	int machine_id = 0;
+
+	EntityStats* stats;
 };
 
 #pragma once

@@ -141,3 +141,43 @@ int counting_FSM2[] = {
 	PRINT,	
 	HALT
 };
+
+int hunger_FSM[] = {
+
+	//state 0 
+
+	//set state to 0
+	CONST_I32, 0,
+	S_STORE,
+	F_LOAD,
+	CONST_I32, 90,	
+	GT_I32,
+	JMPT, 30,
+
+	//state 1
+
+	//set state to 1
+	CONST_I32, 1,
+	S_STORE,
+	F_LOAD,
+	CONST_I32, 50,	
+	GT_I32,
+	JMPT, 30,
+
+	//set state to 2
+	CONST_I32, 2,
+	S_STORE,
+	F_LOAD,
+	CONST_I32, 25,	
+	GT_I32,
+	JMPT, 30,
+
+	//set state to 3
+	CONST_I32, 3,
+	S_STORE,
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT
+};

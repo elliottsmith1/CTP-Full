@@ -16,14 +16,15 @@ public:
 	void SpawnFood();
 	bool CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2);
 	bool CheckFood(sf::RectangleShape object1);
+
+	sf::Vector2f GetFoodPos();
 	int GetMapSize();
-	sf::RectangleShape GetTile(int _i);
+	sf::RectangleShape* GetTile(int _i);
 
 private:
 	int grid_height = 30;
 	int grid_width = 40;
 	std::vector<sf::RectangleShape> map_tiles;
-	sf::RectangleShape current_food;
 	int current_food_id;
 };
 

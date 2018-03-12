@@ -30,12 +30,11 @@ void MapCreator::SpawnMap()
 
 void MapCreator::SpawnFood()
 {
-	current_food_id = rand() % map_tiles.size();
+	map_tiles[current_food_id].setFillColor(sf::Color::Green);
 
-	current_food.setFillColor(sf::Color::Green);
+	current_food_id = rand() % map_tiles.size();	
 
 	map_tiles[current_food_id].setFillColor(sf::Color::Red);
-	current_food = map_tiles[current_food_id];
 }
 
 bool MapCreator::CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2)
@@ -50,7 +49,7 @@ bool MapCreator::CheckCollision(sf::RectangleShape object1, sf::RectangleShape o
 
 bool MapCreator::CheckFood(sf::RectangleShape object1)
 {
-	if (CheckCollision(object1, current_food))
+	if (CheckCollision(object1, map_tiles[current_food_id]))
 	{
 		return true;
 	}
@@ -58,12 +57,17 @@ bool MapCreator::CheckFood(sf::RectangleShape object1)
 	return false;
 }
 
+sf::Vector2f MapCreator::GetFoodPos()
+{
+	return map_tiles[current_food_id].getPosition();
+}
+
 int MapCreator::GetMapSize()
 {
 	return map_tiles.size();
 }
 
-sf::RectangleShape MapCreator::GetTile(int _i)
+sf::RectangleShape* MapCreator::GetTile(int _i)
 {
-	return map_tiles[_i];
+	return &map_tiles[_i];
 }

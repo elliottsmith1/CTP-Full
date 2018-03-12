@@ -153,13 +153,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="IntelligenceEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapCreator.cpp" />
     <ClCompile Include="VirtualM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="EntityStats.h" />
     <ClInclude Include="FSMBehaviour.h" />
+    <ClInclude Include="IntelligenceEntity.h" />
     <ClInclude Include="MapCreator.h" />
     <ClInclude Include="VirtualM.h" />
   </ItemGroup>
