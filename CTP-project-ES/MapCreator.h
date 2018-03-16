@@ -14,12 +14,13 @@ public:
 
 	void SpawnMap();
 	void SpawnFood();
-	bool CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2);
-	bool CheckFood(sf::RectangleShape object1);
+
+	void Update();
 
 	sf::Vector2f GetFoodPos();
 	int GetMapSize();
 	sf::RectangleShape* GetTile(int _i);
+	sf::RectangleShape GetCurrentFood();
 
 private:
 	int grid_height = 30;

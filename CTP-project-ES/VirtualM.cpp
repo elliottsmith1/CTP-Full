@@ -281,6 +281,13 @@ void VirtualM::Run(VM* _vm)
 
 			break;
 
+		case FS_LOAD:                 // load food sight bool
+			PUSH(_vm, ((int)stats->food_in_sight)); // ... push current food sight bool
+
+			printf("\nVM# %d: pushing current food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
+
+			break;
+
 		default:
 			break;
 		}

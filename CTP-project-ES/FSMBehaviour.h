@@ -162,7 +162,7 @@ int hunger_FSM[] = {
 	F_LOAD,
 	CONST_I32, 50,	
 	GT_I32,
-	JMPT, 30,
+	JMPT, 39,
 
 	//set state to 2
 	CONST_I32, 2,
@@ -170,10 +170,41 @@ int hunger_FSM[] = {
 	F_LOAD,
 	CONST_I32, 25,	
 	GT_I32,
-	JMPT, 30,
+	JMPT, 39,
 
 	//set state to 3
 	CONST_I32, 3,
+	S_STORE,
+	F_LOAD,
+	CONST_I32, 10,
+	GT_I32,
+	JMPT, 39,
+
+	//set state to 4
+	CONST_I32, 4,
+	S_STORE,
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT
+};
+
+int aquire_food_FSM[] = {
+
+	//if food in sight, set to state 1
+	//state 0 
+
+	CONST_I32, 0,
+	S_STORE,
+	FS_LOAD,
+	CONST_I32, 0,
+	EQ_I32,
+	JMPT, 12,
+
+	//state 1
+
+	CONST_I32, 1,
 	S_STORE,
 
 	//end loop		

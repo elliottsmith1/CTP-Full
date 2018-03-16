@@ -19,7 +19,9 @@ public:
 	void InterpretFSM(int _id, int _state);
 	void MoveEntity(float _offsetX, float _offsetY);
 	void BoundingBox();
-	void Update();	
+	void Update();
+	bool CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2);
+	void NearbyObjects();
 
 private:
 	sf::RectangleShape entity_shape;
@@ -29,7 +31,6 @@ private:
 
 	float speed = 1.0f;
 
-	bool food_in_sight;
 	sf::Vector2f food_pos;
 };
 

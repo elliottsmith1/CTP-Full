@@ -39,7 +39,8 @@ enum {
 	CALL = 20,      // call procedure
 	RET = 21,       // return from procedure
 	PAUSE = 22,		// pause program
-	F_LOAD = 23		//load food value
+	F_LOAD = 23,		//load food value
+	FS_LOAD = 24		//load food  in sight bool
 };
 
 class VirtualM

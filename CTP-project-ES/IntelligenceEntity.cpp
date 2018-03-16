@@ -37,10 +37,6 @@ EntityStats * IntelligenceEntity::GetStats()
 	return stats;
 }
 
-void IntelligenceEntity::SetFoodInSight(bool _sight)
-{
-	food_in_sight = _sight;
-}
 
 void IntelligenceEntity::SetFoodPos(sf::Vector2f _pos)
 {
@@ -54,78 +50,6 @@ void IntelligenceEntity::InterpretFSM(int _id, int _state)
 
 	switch (_id)
 	{
-		//FSM 1
-		//case 0:
-		//	switch (_state)
-		//	{
-		//	case 2:			
-		//		switch (random_num)
-		//		{
-		//		case 0:
-		//			MoveEntity(speed, 0);
-		//			break;
-		//		case 1:
-		//			MoveEntity(-speed, 0);
-		//			break;
-		//		case 2:
-		//			MoveEntity(0, speed);
-		//			break;
-		//		case 3:
-		//			MoveEntity(0, -speed);
-		//			break;
-		//		}			
-		//		break;
-		//	case 1:
-		//		if (food_in_sight)
-		//		{
-		//			if (food_pos.x > entity_shape.getPosition().x)
-		//				MoveEntity(speed, 0);
-
-		//			if (food_pos.x < entity_shape.getPosition().x)
-		//				MoveEntity(-speed, 0);
-
-		//			if (food_pos.y > entity_shape.getPosition().y)
-		//				MoveEntity(0, speed);
-
-		//			if (food_pos.y < entity_shape.getPosition().y)
-		//				MoveEntity(0, -speed);
-		//			return;
-		//		}
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//	break;
-
-		////FSM 2
-		//case 1:
-		//	switch (_state)
-		//	{
-		//	case 1:
-		//		if (entity_shape.getFillColor() != sf::Color::Red)
-		//		{
-		//			entity_shape.setFillColor(sf::Color::Red);
-		//		}
-		//		break;
-		//	case 2:
-		//		if (entity_shape.getFillColor() != sf::Color::Blue)
-		//		{
-		//			entity_shape.setFillColor(sf::Color::Blue);
-		//		}
-		//		break;
-		//	case 3:
-		//		if (entity_shape.getFillColor() != sf::Color::Magenta)
-		//		{
-		//			entity_shape.setFillColor(sf::Color::Magenta);
-		//		}
-		//		break;
-		//	default:
-		//		break;
-		//	}
-		//default:
-		//	break;
-		//}
-			//FSM 3
 	case 0:
 		switch (_state)
 		{
@@ -139,6 +63,10 @@ void IntelligenceEntity::InterpretFSM(int _id, int _state)
 			break;
 		case 3:
 			speed = 2.0f;
+			break;
+		case 4:
+			speed = 3.0f;
+			break;
 		default:
 			break;
 		}
@@ -156,6 +84,31 @@ void IntelligenceEntity::InterpretFSM(int _id, int _state)
 			break;
 		case 3:
 			MoveEntity(0, -speed);
+			break;
+		}
+		break;
+	case 1:
+		switch (_state)
+		{
+		case 1:
+			if (food_pos.x > entity_shape.getPosition().x)
+			{
+				MoveEntity(speed, 0);
+			}
+			if (food_pos.x < entity_shape.getPosition().x)
+			{
+				MoveEntity(-speed, 0);
+			}
+			if (food_pos.y > entity_shape.getPosition().y)
+			{
+				MoveEntity(0, speed);
+			}
+			if (food_pos.y < entity_shape.getPosition().y)
+			{
+				MoveEntity(0, -speed);
+			}	
+			break;
+		default:
 			break;
 		}
 		break;
@@ -201,6 +154,49 @@ void IntelligenceEntity::Update()
 	}
 
 	BoundingBox();	
+	NearbyObjects();
+
+}
+
+bool IntelligenceEntity::CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2)
+{
+	if (object1.getGlobalBounds().intersects(object2.getGlobalBounds()))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void IntelligenceEntity::NearbyObjects()
+{
+	for (int i = 0; i < stats->map_tiles.size(); i++)
+	{
+		if (CheckCollision(view, *stats->map_tiles[i]))
+		{
+			if (stats->map_tiles[i]->getFillColor() == sf::Color::Red)
+			{
+				if (!stats->food_in_sight)
+				{
+					stats->food_in_sight = true;
+					food_pos = stats->map_tiles[i]->getPosition();
+				}
+
+				if (CheckCollision(entity_shape, *stats->map_tiles[i]))
+				{
+					stats->map_tiles[i]->setFillColor(sf::Color::Green);
+					stats->food += 25;
+					stats->food_in_sight = false;
+
+					if (stats->food > 100)
+					{
+						stats->food = 100;
+					}
+				}
+			}
+		}
+	}
+
 }
 
 

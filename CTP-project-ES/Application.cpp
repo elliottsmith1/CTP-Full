@@ -16,6 +16,8 @@ void Application::Init()
 	for (int i = 0; i < map_creator->GetMapSize(); i++)
 	{
 		game_objects.push_back(map_creator->GetTile(i));
+
+		entity->GetStats()->map_tiles.push_back(game_objects[i]);
 	}
 
 	//game_objects.push_back(entity->GetView());
@@ -25,33 +27,18 @@ void Application::Init()
 	//behaviours.push_back(counting_FSM);
 	//behaviours.push_back(counting_FSM2);
 	behaviours.push_back(hunger_FSM);
+	behaviours.push_back(aquire_food_FSM);
 
 	CreateVirtualMachines();
 }
 
 void Application::Update()
 {
-	if (map_creator->CheckFood(*entity->GetView()))
-	{
-		entity->SetFoodInSight(true);
-		entity->SetFoodPos(map_creator->GetFoodPos());
-	}
-
-	else
-	{
-		entity->SetFoodInSight(false);
-	}
-	
-	if (map_creator->CheckFood(*entity->GetEntity()))
-	{
-		map_creator->SpawnFood();
-
-		entity->GetStats()->food += 25;		
-	}
-
 	RunVMachines();
 
 	entity->Update();
+
+	map_creator->Update();
 }
 
 void Application::CreateVirtualMachines()
