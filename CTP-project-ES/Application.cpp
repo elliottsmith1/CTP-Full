@@ -87,7 +87,9 @@ void Application::RunVMachines()
 
 		printf("\n\nVM%d state: %d\n\n", id, state);
 
-		entity->InterpretFSM(id, state);		
+		//entity->InterpretFSM(id, state);		
+		entity->SetStats(virtual_machines[i]->GetStats());
+		//entity->Behaviour();
 	}
 }
 
@@ -99,6 +101,11 @@ MapCreator * Application::GetMapCreator()
 sf::RectangleShape Application::GetGameObject(int _i)
 {
 	return *game_objects[_i];
+}
+
+sf::RectangleShape Application::GetUI(int _i)
+{
+	return entity->GetUI(_i);
 }
 
 int Application::GetGameObjectNum()

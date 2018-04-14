@@ -25,7 +25,7 @@ void MapCreator::SpawnMap()
 		height += 20.0f;
 		width = 0.0f;
 	}
-	SpawnFood();
+	//SpawnFood();
 }
 
 void MapCreator::SpawnFood()
@@ -39,7 +39,7 @@ void MapCreator::Update()
 {
 	if (map_tiles[current_food_id].getFillColor() != sf::Color::Red)
 	{
-		SpawnFood();
+		//SpawnFood();
 	}
 }
 

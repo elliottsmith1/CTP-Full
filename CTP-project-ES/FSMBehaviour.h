@@ -1,214 +1,116 @@
 #include "VirtualM.h"
 
-//address of counting int
-const int counting_address = 0;
-
-int counting_FSM[] = {
-
-	//start - set count value to 1
-	CONST_I32, 1,
-	GSTORE, counting_address,
-
-	//state 1 - adding by 1
-
-	//set state to 1
-	CONST_I32, 1,
-	S_STORE,
-	//get count
-	CONST_I32, counting_address,
-	GLOAD,
-	//add 1 to count
-	CONST_I32, 1,
-	ADD_I32,
-	//store result
-	GSTORE, counting_address,
-	//load count
-	CONST_I32, counting_address,
-	GLOAD,
-	//check if equal to max
-	CONST_I32, 5,
-	EQ_I32,
-	//if not yet reached then back to start
-	JMPF, 7,
-
-	//state 2 - adding by 1
-	//set state to 2
-	CONST_I32, 2,
-	S_STORE,
-	//get count
-	CONST_I32, counting_address,
-	GLOAD,
-	//add 10
-	CONST_I32, 1,
-	ADD_I32,
-	//store count
-	GSTORE, counting_address,
-	//load count
-	CONST_I32, counting_address,
-	GLOAD,
-	//check if equal to max
-	CONST_I32, 10,
-	EQ_I32,
-	//keep going until reached
-	JMPF, 26,
-
-	////restart back at beggining 
-	//CONST_I32, 1,
-	//JMP, 0,
+float hunger_FSM[] = {
 
 	//end loop		
 	S_LOAD,
 	PRINT,
-	HALT
-}; 
+	HALT,
 
-int counting_FSM2[] = {
-
-	//start - set count value to 1
+	//check if food is above 1
+	//if so, deduct some
+	//otherwise jump to state 4
+	STAT_LOAD, 0,
 	CONST_I32, 1,
-	GSTORE, counting_address,
-
-	//state 1 - adding by 1
-
-	//set state to 1
-	CONST_I32, 1,
-	S_STORE,
-	//get count
-	CONST_I32, counting_address,
-	GLOAD,
-	//add 1 to count
-	CONST_I32, 1,
-	ADD_I32,
-	//store result
-	GSTORE, counting_address,
-	//load count
-	CONST_I32, counting_address,
-	GLOAD,
-	//check if equal to max
-	CONST_I32, 5,
-	EQ_I32,
-	//if not yet reached then back to start
-	JMPF, 7,
-
-	//state 2 - adding by 1
-	//set state to 2
-	CONST_I32, 2,
-	S_STORE,
-	//get count
-	CONST_I32, counting_address,
-	GLOAD,
-	//add 1
-	CONST_I32, 1,
-	ADD_I32,
-	//store count
-	GSTORE, counting_address,
-	//load count
-	CONST_I32, counting_address,
-	GLOAD,
-	//check if equal to max
-	CONST_I32, 10,
-	EQ_I32,
-	//keep going until reached
-	JMPF, 26,
-
-	//state 3 - adding by 1
-	//set state to 2
-	CONST_I32, 3,
-	S_STORE,
-	//get count
-	CONST_I32, counting_address,
-	GLOAD,
-	//add 1
-	CONST_I32, 1,
-	ADD_I32,
-	//store count
-	GSTORE, counting_address,
-	//load count
-	CONST_I32, counting_address,
-	GLOAD,
-	//check if equal to max
-	CONST_I32, 15,
-	EQ_I32,
-	//keep going until reached
-	JMPF, 45,
-
-	////restart back at beggining 
-	//CONST_I32, 1,
-	//JMP, 0,
-
-	//end loop		
-	S_LOAD,
-	PRINT,	
-	HALT
-};
-
-int hunger_FSM[] = {
+	GT_I32,
+	JMPF, 73,
+	STAT_LOAD, 0,
+	CONST_I32, 0.01f,
+	SUB_I32,
+	STAT_SAVE, 0,
 
 	//state 0 
-
-	//set state to 0
+	//check if food is above 90
+	//set speed to not moving
 	CONST_I32, 0,
 	S_STORE,
-	F_LOAD,
+	CONST_I32, 0,
+	STAT_SAVE, 3,
+	STAT_LOAD, 0,
 	CONST_I32, 90,	
 	GT_I32,
-	JMPT, 30,
+	JMPT, 0,
 
 	//state 1
-
-	//set state to 1
+	//check if food is above 50
+	//set speed to 1
 	CONST_I32, 1,
 	S_STORE,
-	F_LOAD,
+	CONST_I32, 1,
+	STAT_SAVE, 3,
+	STAT_LOAD, 0,
 	CONST_I32, 50,	
 	GT_I32,
-	JMPT, 39,
+	JMPT, 0,
 
 	//set state to 2
+	//check if food is above 25
+	//set speed to 1.5
 	CONST_I32, 2,
 	S_STORE,
-	F_LOAD,
+	CONST_I32, 1.5,
+	STAT_SAVE, 3,
+	STAT_LOAD, 0,
 	CONST_I32, 25,	
 	GT_I32,
-	JMPT, 39,
+	JMPT, 0,
 
 	//set state to 3
+	//check if food is above 10
+	//set speed to 2
 	CONST_I32, 3,
 	S_STORE,
-	F_LOAD,
+	CONST_I32, 2,
+	STAT_SAVE, 3,
+	STAT_LOAD, 0,
 	CONST_I32, 10,
 	GT_I32,
-	JMPT, 39,
+	JMPT, 0,
 
 	//set state to 4
+	//check if food is above 1
+	//if not == starving 
+	//set speed to 0.5
+	//deduct health
+	STAT_LOAD, 0,
+	CONST_I32, 1,
+	LT_I32,
+	JMPF, 0,
 	CONST_I32, 4,
-	S_STORE,
+	S_STORE,	
+	CONST_I32, 0.5f,
+	STAT_SAVE, 3,
+	STAT_LOAD, 4,
+	CONST_I32, 1,
+	GT_I32,
+	JMPF, 0,
+	STAT_LOAD, 4,
+	CONST_I32, 0.03f,
+	SUB_I32,
+	STAT_SAVE, 4,
+	JMP, 0
+};
+
+float aquire_food_FSM[] = {
 
 	//end loop		
 	S_LOAD,
 	PRINT,
-	HALT
-};
-
-int aquire_food_FSM[] = {
+	HALT,
 
 	//if food in sight, set to state 1
 	//state 0 
 
 	CONST_I32, 0,
 	S_STORE,
-	FS_LOAD,
+	STAT_LOAD, 1,
 	CONST_I32, 0,
 	EQ_I32,
-	JMPT, 12,
+	JMPT, 0,
 
 	//state 1
 
 	CONST_I32, 1,
 	S_STORE,
-
-	//end loop		
-	S_LOAD,
-	PRINT,
-	HALT
+	JMP, 0
 };

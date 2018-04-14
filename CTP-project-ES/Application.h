@@ -25,6 +25,7 @@ public:
 
 	MapCreator* GetMapCreator();
 	sf::RectangleShape GetGameObject(int _i);
+	sf::RectangleShape GetUI(int _i);
 	int GetGameObjectNum();
 
 private:
@@ -33,7 +34,7 @@ private:
 	std::vector<sf::RectangleShape*> game_objects;
 
 	//FSM programs
-	std::vector<int*> behaviours;
+	std::vector<float*> behaviours;
 	//Virtual machines
 	std::vector<VirtualM*> virtual_machines;
 };

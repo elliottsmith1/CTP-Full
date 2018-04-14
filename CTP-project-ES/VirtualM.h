@@ -9,8 +9,8 @@
 
 typedef struct {
 	int* locals;    // local scoped data
-	int* code;      // array od byte codes to be executed
-	int* stack;     // virtual stack
+	float* code;      // array od byte codes to be executed
+	float* stack;     // virtual stack
 	int pc;         // program counter (aka. IP - instruction pointer)
 	int sp;         // stack pointer
 	int fp;         // frame pointer (for local scope)
@@ -26,7 +26,7 @@ enum {
 	JMP = 7,        // branch
 	JMPT = 8,       // branch if true
 	JMPF = 9,       // branch if false
-	CONST_I32 = 10, // push constant integer
+	CONST_I32 = 10, // push constant float
 	LOAD = 11,      // load from local
 	GLOAD = 12,     // load from global
 	S_LOAD = 13,	// load state
@@ -39,8 +39,8 @@ enum {
 	CALL = 20,      // call procedure
 	RET = 21,       // return from procedure
 	PAUSE = 22,		// pause program
-	F_LOAD = 23,		//load food value
-	FS_LOAD = 24		//load food  in sight bool
+	STAT_LOAD = 23,	// load specific stat
+	STAT_SAVE = 24	// save specific stat
 };
 
 class VirtualM
@@ -49,10 +49,10 @@ public:
 	VirtualM();
 	~VirtualM();
 
-	void Machine(int* _code);
+	void Machine(float* _code);
 	void Run(VM* vm);
 
-	VM* newVM(int* _code,    // pointer to table containing a bytecode to be executed  
+	VM* newVM(float* _code,    // pointer to table containing a bytecode to be executed  
 		int _pc,             // address of instruction to be invoked as first one - entrypoint/main func
 		int _datasize);
 
@@ -61,6 +61,7 @@ public:
 	int GetState();
 	int GetID();
 	VM* GetVM();
+	EntityStats* GetStats();
 
 	void SetStats(EntityStats* _stats);
 	void SetID(int _id);	

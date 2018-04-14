@@ -31,8 +31,11 @@ int main()
 
 		for (int i = 0; i < app->GetGameObjectNum(); i++)
 		{
-			window.draw(app->GetGameObject(i));
+			window.draw(app->GetGameObject(i));			
 		}
+
+		window.draw(app->GetUI(0));
+		window.draw(app->GetUI(1));
 
 		window.display();
 	}

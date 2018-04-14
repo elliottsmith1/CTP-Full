@@ -1,6 +1,6 @@
 #include "VirtualM.h"
 
-VM* VirtualM::newVM(int* _code, int _pc, int _datasize)
+VM* VirtualM::newVM(float* _code, int _pc, int _datasize)
 {      
 	// total locals size required to perform a program operations
 	vm = (VM*)malloc(sizeof(VM));
@@ -9,7 +9,7 @@ VM* VirtualM::newVM(int* _code, int _pc, int _datasize)
 	vm->fp = 0;
 	vm->sp = -1;
 	vm->locals = (int*)malloc(sizeof(int) * _datasize);
-	vm->stack = (int*)malloc(sizeof(int) * stack_size);
+	vm->stack = (float*)malloc(sizeof(float) * stack_size);
 
 	return vm;
 }
@@ -35,6 +35,11 @@ VM * VirtualM::GetVM()
 	return vm;
 }
 
+EntityStats * VirtualM::GetStats()
+{
+	return stats;
+}
+
 void VirtualM::SetStats(EntityStats* _stats)
 {
 	stats = _stats;
@@ -47,11 +52,12 @@ void VirtualM::SetID(int _id)
 
 void VirtualM::Run(VM* _vm) 
 {
-	vm->pc = 0;
+	vm->pc = 3;
 
 	do {
 		int opcode = NCODE(_vm);        // fetch
-		int v, addr, offset, a, b, argc, rval;
+		float v, a, b;
+		int addr, offset, argc, rval;
 
 		switch (opcode) {   // decode
 
@@ -62,7 +68,7 @@ void VirtualM::Run(VM* _vm)
 			v = NCODE(_vm);   // get next value from code ...
 			PUSH(_vm, v);     // ... and move it on top of the stack
 
-			printf("\nVM# %d: pushing constant int (%d)\n", machine_id, v);
+			printf("\nVM# %d: pushing constant float (%.2f)\n", machine_id, v);
 
 			break;
 
@@ -71,7 +77,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a + b);    // ... add those two values and put result on top of the stack
 
-			printf("\nVM# %d: adding %d + %d (%d)\n", machine_id, a, b, (a + b));
+			printf("\nVM# %d: adding %.2f + %.2f (%.2f)\n", machine_id, a, b, (a + b));
 
 			break;
 
@@ -80,7 +86,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a - b);    // ... subtract those two values and put result on top of the stack
 
-			printf("\nVM# %d: subtracting %d - %d (%d)\n", machine_id, a, b, (a - b));
+			printf("\nVM# %d: subtracting %.2f - %.2f (%.2f)\n", machine_id, a, b, (a - b));
 
 			break;
 
@@ -89,7 +95,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a * b);    // ... multiply those two values and put result on top of the stack
 
-			printf("\nVM# %d: multiplying %d * %d (%d)\n", machine_id, a, b, (a*b));
+			printf("\nVM# %d: multiplying %.2f * %.2f (%.2f)\n", machine_id, a, b, (a*b));
 
 			break;
 
@@ -98,7 +104,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a<b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %d less than %d?", machine_id, a, b);
+			printf("\nVM# %d: %.2f less than %.2f?", machine_id, a, b);
 
 			if (a < b)
 			{
@@ -116,7 +122,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a>b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %d greater than %d?", machine_id, a, b);
+			printf("\nVM# %d: %.2f greater than %.2f?", machine_id, a, b);
 
 			if (a > b)
 			{
@@ -134,7 +140,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a == b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %d equal to %d?", machine_id, a, b);
+			printf("\nVM# %d: %.2f equal to %.2f?", machine_id, a, b);
 
 			if (a == b)
 			{
@@ -150,7 +156,7 @@ void VirtualM::Run(VM* _vm)
 		case JMP:
 			_vm->pc = NCODE(_vm);  // unconditionaly jump with program counter to provided address
 
-			printf("\nVM# %d: jump to opcode instruction: %d\n", machine_id, NCODE(vm));
+			printf("\nVM# %d: jump to opcode instruction: %.2f\n", machine_id, NCODE(vm));
 
 			break;
 
@@ -160,7 +166,7 @@ void VirtualM::Run(VM* _vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				_vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\nVM# %d: jump true\nopcode: %d\n", machine_id, addr);
+				printf("\nVM# %d: jump true\nopcode: %.2f\n", machine_id, addr);
 			}
 
 			break;
@@ -171,7 +177,7 @@ void VirtualM::Run(VM* _vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				_vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\nVM# %d: jump false\nopcode: %d\n", machine_id, addr);
+				printf("\nVM# %d: jump false\nopcode: %.2f\n", machine_id, addr);
 			}
 
 			break;
@@ -187,7 +193,7 @@ void VirtualM::Run(VM* _vm)
 		case S_LOAD:                 // load state
 			PUSH(_vm, state); // ... push current state
 
-			printf("\nVM# %d: pushing current state (%d)\n", machine_id, state);
+			printf("\nVM# %d: pushing current state (%.2f)\n", machine_id, state);
 
 			break;
 
@@ -204,7 +210,7 @@ void VirtualM::Run(VM* _vm)
 			v = POP(_vm);            // get value from top of the stack ...
 			state = v;
 
-			printf("\nVM# %d: saving state (%d)\n", machine_id, v);
+			printf("\nVM# %d: saving state (%.2f)\n", machine_id, v);
 
 			break;
 
@@ -213,7 +219,7 @@ void VirtualM::Run(VM* _vm)
 			v = _vm->locals[addr];         // ... load value from memory of the provided addres ...
 			PUSH(_vm, v);                // ... and put that value on top of the stack
 
-			printf("\nVM# %d: load global\nvalue: %d\naddress: %d\n", machine_id, v, addr);
+			printf("\nVM# %d: load global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -222,7 +228,7 @@ void VirtualM::Run(VM* _vm)
 			addr = NCODE(_vm);           // ... get pointer address from code ...
 			_vm->locals[addr] = v;         // ... and store value at address received
 
-			printf("\nVM# %d: store global\nvalue: %d\naddress: %d\n", machine_id, v, addr);
+			printf("\nVM# %d: store global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -262,7 +268,7 @@ void VirtualM::Run(VM* _vm)
 
 		case PRINT:
 			v = POP(_vm);        // pop value from top of the stack ...
-			printf("\nVM# %d: Printing top of stack: %d\n", machine_id, v);  // ... and print it					
+			printf("\nVM# %d: Printing top of stack: %.2f\n", machine_id, v);  // ... and print it					
 
 			break;
 
@@ -274,18 +280,55 @@ void VirtualM::Run(VM* _vm)
 
 			break;
 
-		case F_LOAD:                 // load food value
-			PUSH(_vm, ((int)stats->food)); // ... push current food value
+		case STAT_LOAD:
+			v = NCODE(_vm);   // get stat id from next value 
 
-			printf("\nVM# %d: pushing current food value (%d)\n", machine_id, ((int)stats->food));
-
+			//return stat based on ID selected
+			switch ((int)v)
+			{
+			case 0:
+				PUSH(_vm, stats->food); // ... push current food value
+				printf("\nVM# %d: pushing current food value (%.2f)\n", machine_id, stats->food);
+				break;
+			case 1:
+				PUSH(_vm, ((int)stats->food_in_sight)); // ... push current food sight bool
+				printf("\nVM# %d: pushing current food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
+				break;
+			case 3:
+				PUSH(_vm, stats->speed); // ... push current speed
+				printf("\nVM# %d: pushing current speed (%.2f)\n", machine_id, stats->speed);
+				break;
+			case 4:
+				PUSH(_vm, stats->health); // ... push current health
+				printf("\nVM# %d: pushing current health (%.2f)\n", machine_id, stats->health);
+				break;
+			}
 			break;
 
-		case FS_LOAD:                 // load food sight bool
-			PUSH(_vm, ((int)stats->food_in_sight)); // ... push current food sight bool
+		case STAT_SAVE:
+			a = POP(_vm);		//get value from stack	
+			v = NCODE(_vm);   // get stat id from next value 
 
-			printf("\nVM# %d: pushing current food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
-
+			//save stat based on ID selected and value given
+			switch ((int)v)
+			{
+			case 0:
+				stats->food = a;
+				printf("\nVM# %d: saving food value (%.2f)\n", machine_id, stats->food);
+				break;
+			case 1:
+				stats->food_in_sight = a;
+				printf("\nVM# %d: saving food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
+				break;
+			case 3:
+				stats->speed = a;
+				printf("\nVM# %d: saving speed (%.2f)\n", machine_id, stats->speed);
+				break;
+			case 4:
+				stats->health = a;
+				printf("\nVM# %d: saving health (%.2f)\n", machine_id, stats->health);
+				break;
+			}
 			break;
 
 		default:
@@ -305,12 +348,12 @@ VirtualM::~VirtualM()
 	delete stats;
 }
 
-void VirtualM::Machine(int* _code)
+void VirtualM::Machine(float* _code)
 {
 	// initialize virtual machine
 	vm = newVM(_code,   // program to execute  
-		0,    // start address of main function
-		1);    // locals to be reserved
+		3,    // start address of main function
+		0);    // locals to be reserved
 	
 	Run(vm);
 }

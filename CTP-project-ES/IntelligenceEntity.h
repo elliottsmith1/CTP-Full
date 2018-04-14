@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 #include "EntityStats.h"
 
@@ -9,14 +10,16 @@ public:
 	~IntelligenceEntity();
 
 	sf::RectangleShape* GetEntity();
+	sf::RectangleShape GetUI(int _i);
 	sf::RectangleShape* GetView();
 
 	EntityStats* GetStats();
 
+	void SetStats(EntityStats* _stats);
 	void SetFoodInSight(bool _sight);
 	void SetFoodPos(sf::Vector2f _pos);
 
-	void InterpretFSM(int _id, int _state);
+	void Behaviour();
 	void MoveEntity(float _offsetX, float _offsetY);
 	void BoundingBox();
 	void Update();
@@ -24,12 +27,14 @@ public:
 	void NearbyObjects();
 
 private:
+	sf::RectangleShape health_UI;
+	sf::RectangleShape hunger_UI;
 	sf::RectangleShape entity_shape;
 	sf::RectangleShape view;
 
-	EntityStats* stats;
+	std::vector<sf::RectangleShape*> shape_UI_elements;
 
-	float speed = 1.0f;
+	EntityStats* stats;
 
 	sf::Vector2f food_pos;
 };
