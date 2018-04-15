@@ -34,8 +34,10 @@ int main()
 			window.draw(app->GetGameObject(i));			
 		}
 
-		window.draw(app->GetUI(0));
-		window.draw(app->GetUI(1));
+		for (int i = 0; i < app->GetUISize(); i++)
+		{
+			window.draw(app->GetUI(i));
+		}
 
 		window.display();
 	}

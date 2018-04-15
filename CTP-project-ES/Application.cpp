@@ -17,17 +17,16 @@ void Application::Init()
 	{
 		game_objects.push_back(map_creator->GetTile(i));
 
-		entity->GetStats()->map_tiles.push_back(game_objects[i]);
+		entity->GetStats()->game_objects.push_back(game_objects[i]);
 	}
 
-	//game_objects.push_back(entity->GetView());
 	game_objects.push_back(entity->GetEntity());
 	
-
-	//behaviours.push_back(counting_FSM);
-	//behaviours.push_back(counting_FSM2);
 	behaviours.push_back(hunger_FSM);
 	behaviours.push_back(aquire_food_FSM);
+	behaviours.push_back(target_movement_FSM);
+	behaviours.push_back(random_movement_FSM);
+	behaviours.push_back(nearby_objects);
 
 	CreateVirtualMachines();
 }
@@ -47,6 +46,8 @@ void Application::CreateVirtualMachines()
 	for (int i = 0; i < behaviours.size(); i++)
 	{
 		VirtualM* virtual_machine = new VirtualM;
+
+		virtual_machine->SetStats(entity->GetStats());
 
 		virtual_machine->SetID(i);
 
@@ -106,6 +107,11 @@ sf::RectangleShape Application::GetGameObject(int _i)
 sf::RectangleShape Application::GetUI(int _i)
 {
 	return entity->GetUI(_i);
+}
+
+int Application::GetUISize()
+{
+	return entity->GetUISize();
 }
 
 int Application::GetGameObjectNum()

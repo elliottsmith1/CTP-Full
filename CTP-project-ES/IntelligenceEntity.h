@@ -12,13 +12,15 @@ public:
 	sf::RectangleShape* GetEntity();
 	sf::RectangleShape GetUI(int _i);
 	sf::RectangleShape* GetView();
-
+	int GetUISize();
 	EntityStats* GetStats();
 
 	void SetStats(EntityStats* _stats);
 	void SetFoodInSight(bool _sight);
 	void SetFoodPos(sf::Vector2f _pos);
 
+	void InitShapes();
+	void UpdateUI();
 	void Behaviour();
 	void MoveEntity(float _offsetX, float _offsetY);
 	void BoundingBox();
@@ -29,6 +31,8 @@ public:
 private:
 	sf::RectangleShape health_UI;
 	sf::RectangleShape hunger_UI;
+	sf::RectangleShape health_outline;
+	sf::RectangleShape hunger_outline;
 	sf::RectangleShape entity_shape;
 	sf::RectangleShape view;
 

@@ -114,3 +114,87 @@ float aquire_food_FSM[] = {
 	S_STORE,
 	JMP, 0
 };
+
+float target_movement_FSM[] = {
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT,
+
+	STAT_LOAD, 5,
+	STAT_LOAD, 7,
+	LT_I32,
+	JMPF, 17,
+	STAT_LOAD, 3,
+	STAT_LOAD, 5,
+	ADD_I32,
+	STAT_SAVE, 5,
+
+	STAT_LOAD, 6,
+	STAT_LOAD, 8,
+	LT_I32,
+	JMPF, 31,
+	STAT_LOAD, 3,
+	STAT_LOAD, 6,
+	ADD_I32,
+	STAT_SAVE, 6,
+
+	STAT_LOAD, 5,
+	STAT_LOAD, 7,
+	GT_I32,
+	JMPF, 45,
+	STAT_LOAD, 5,
+	STAT_LOAD, 3,
+	SUB_I32,
+	STAT_SAVE, 5,
+
+	STAT_LOAD, 6,
+	STAT_LOAD, 8,
+	GT_I32,
+	JMPF, 0,
+	STAT_LOAD, 6,
+	STAT_LOAD, 3,
+	SUB_I32,
+	STAT_SAVE, 6,
+	JMP, 0
+};
+
+float random_movement_FSM[]{
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT,
+
+	STAT_LOAD, 5,
+	STAT_LOAD, 7,
+	CHECK_NEAR,
+	JMPF, 0,
+
+	STAT_LOAD, 6,
+	STAT_LOAD, 8,
+	CHECK_NEAR,
+	JMPF, 0,
+
+	RAND, 770,
+	STAT_SAVE, 7,
+	RAND, 570,
+	STAT_SAVE, 8,
+	JMP, 0
+};
+
+int counter = 0;
+
+float nearby_objects[]{
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT,
+
+	CLEAR_VEC, 1,
+
+	CHECK_OBJECTS,
+	JMP, 0
+};
