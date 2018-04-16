@@ -23,10 +23,9 @@ void Application::Init()
 	game_objects.push_back(entity->GetEntity());
 	
 	behaviours.push_back(hunger_FSM);
-	behaviours.push_back(aquire_food_FSM);
 	behaviours.push_back(target_movement_FSM);
 	behaviours.push_back(random_movement_FSM);
-	behaviours.push_back(nearby_objects);
+	//behaviours.push_back(nearby_food_FSM);
 
 	CreateVirtualMachines();
 }

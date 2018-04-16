@@ -325,6 +325,10 @@ void VirtualM::Run(VM* _vm)
 				PUSH(_vm, stats->target_y); // ... push current target y pos
 				printf("\nVM# %d: pushing current y target pos (%.2f)\n", machine_id, stats->target_y);
 				break;
+			case 9:
+				PUSH(_vm, stats->nearby_objects.size());
+				printf("\nVM# %d: pushing nearby object vector size (%d)\n", machine_id, stats->nearby_objects.size());
+				break;
 			}
 			break;
 
@@ -382,7 +386,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);
 			printf("\nVM# %d: check if (%.2f) is near (%.02f) \n", machine_id, a, b);
 
-			if ((a < (b + 3)) && (a > (b - 3)))
+			if ((a < (b + 20)) && (a > (b - 20)))
 			{				
 				PUSH(_vm, 1);
 			}
@@ -409,15 +413,15 @@ void VirtualM::Run(VM* _vm)
 			break;
 
 		case GET_X_POS:
-			v = NCODE(_vm);   // get id from next value
-			x_pos = stats->game_objects[v]->getPosition().x;
+			v = POP(_vm);   // get id from next value
+			x_pos = stats->nearby_objects[v]->getPosition().x;
 			printf("\nVM# %d: pushing x position (%.02f) \n", machine_id, x_pos);
 			PUSH(_vm, x_pos);
 			break;
 
 		case GET_Y_POS:
-			v = NCODE(_vm);   // get id from next value
-			y_pos = stats->game_objects[v]->getPosition().y;
+			v = POP(_vm);   // get id from next value
+			y_pos = stats->nearby_objects[v]->getPosition().y;
 			printf("\nVM# %d: pushing y position (%.02f) \n", machine_id, y_pos);
 			PUSH(_vm, y_pos);
 			break;
@@ -429,39 +433,66 @@ void VirtualM::Run(VM* _vm)
 			break;
 
 		case CHECK_OBJECTS:
-			for (int i = 0; i < stats->game_objects.size(); i++)
+			printf("\nVM# %d: %d game objects to check\n", machine_id, stats->game_objects.size());
+			printf("VM# %d: checking for nearby objects\n", machine_id);
+
+			if (stats->game_objects.size() > 0)
 			{
-				if (stats->pos_x < stats->game_objects[i]->getPosition().x + 5)
+				for (int i = 0; i < stats->game_objects.size(); i++)
 				{
-					if (stats->pos_x > stats->game_objects[i]->getPosition().x - 5)
+					if (stats->pos_x < stats->game_objects[i]->getPosition().x + 65)
 					{
-						if (stats->pos_y < stats->game_objects[i]->getPosition().y + 5)
+						if (stats->pos_x > stats->game_objects[i]->getPosition().x - 65)
 						{
-							if (stats->pos_y > stats->game_objects[i]->getPosition().y - 5)
+							if (stats->pos_y < stats->game_objects[i]->getPosition().y + 65)
 							{
-								stats->nearby_objects.push_back(stats->game_objects[i]);
+								if (stats->pos_y > stats->game_objects[i]->getPosition().y - 65)
+								{
+									stats->nearby_objects.push_back(stats->game_objects[i]);
+								}
 							}
 						}
 					}
 				}
 			}
 
+			printf("VM# %d: found (%d) nearby objects\n", machine_id, stats->nearby_objects.size());
+
 			break;
 
 		case CHECK_COLOUR:
-			v = NCODE(_vm);   // get id from next value
+			v = POP(_vm);   // get id 
+			printf("\nVM# %d: checking (%d) nearby object colour\n", machine_id, v);
 
 			if (stats->nearby_objects[v]->getFillColor() == sf::Color::Red)
 			{
 				PUSH(_vm, 1);
+
+				stats->food_tile = stats->nearby_objects[v];
 			}
 
 			else if (stats->nearby_objects[v]->getFillColor() == sf::Color::Green)
 			{
 				PUSH(_vm, 2);
 			}
-			
+			break;
 
+		case CHANGE_COLOUR:					
+			v = POP(_vm);		// get colour id
+			a = NCODE(_vm);   // get id from next value			
+			printf("\nVM# %d: changing nearby object (%d) colour\n", machine_id, v);
+
+			switch ((int)a)
+			{
+			case 0:
+				stats->nearby_objects[v]->setFillColor(sf::Color::Green);
+				break;
+			case 1:
+				stats->nearby_objects[v]->setFillColor(sf::Color::Red);
+				break;
+			default:
+				break;
+			}
 			break;
 
 		default:

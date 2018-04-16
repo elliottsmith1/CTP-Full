@@ -91,30 +91,6 @@ float hunger_FSM[] = {
 	JMP, 0
 };
 
-float aquire_food_FSM[] = {
-
-	//end loop		
-	S_LOAD,
-	PRINT,
-	HALT,
-
-	//if food in sight, set to state 1
-	//state 0 
-
-	CONST_I32, 0,
-	S_STORE,
-	STAT_LOAD, 1,
-	CONST_I32, 0,
-	EQ_I32,
-	JMPT, 0,
-
-	//state 1
-
-	CONST_I32, 1,
-	S_STORE,
-	JMP, 0
-};
-
 float target_movement_FSM[] = {
 
 	//end loop		
@@ -186,15 +162,75 @@ float random_movement_FSM[]{
 
 int counter = 0;
 
-float nearby_objects[]{
+float nearby_food_FSM[]{
 
 	//end loop		
 	S_LOAD,
 	PRINT,
 	HALT,
 
+	CONST_I32, 0,
+	GSTORE, counter,
+
 	CLEAR_VEC, 1,
 
 	CHECK_OBJECTS,
+
+	STAT_LOAD, 9,
+	CONST_I32, 0,
+	GT_I32,
+	JMPF, 0,
+
+	CONST_I32, counter,
+	GLOAD,
+	CHECK_COLOUR, 
+	CONST_I32, 1,
+	EQ_I32,
+	JMPT, 43,
+
+	CONST_I32, counter,
+	GLOAD,
+	CONST_I32, 1,
+	ADD_I32,
+	GSTORE, counter,
+	CONST_I32, counter,
+	GLOAD,
+	STAT_LOAD, 9,
+	LT_I32,
+	JMPF, 0,
+	JMP, 17,
+
+	CONST_I32, 1,
+	STAT_SAVE, 1,
+	CONST_I32, counter,
+	GLOAD,
+	GET_X_POS,
+	STAT_SAVE, 7,
+	CONST_I32, counter,
+	GLOAD,
+	GET_Y_POS,
+	STAT_SAVE, 8,
+
+	CONST_I32, counter,
+	GLOAD,
+	GET_X_POS,
+	STAT_LOAD, 5,
+	CHECK_NEAR,
+	JMPF, 0,
+	CONST_I32, counter,
+	GLOAD,
+	GET_Y_POS,
+	STAT_LOAD, 6,
+	CHECK_NEAR,
+	JMPF, 0,
+
+	CONST_I32, counter,
+	GLOAD,
+	CHANGE_COLOUR, 0,
+	CONST_I32, 25,
+	STAT_LOAD, 0,
+	ADD_I32,
+	STAT_SAVE, 0,
 	JMP, 0
+
 };

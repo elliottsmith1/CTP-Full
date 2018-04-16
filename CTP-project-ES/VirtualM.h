@@ -48,7 +48,8 @@ enum {
 	GET_Y_POS = 29,	// get y position
 	VEC_ADD = 30,	// add to a vector
 	CHECK_OBJECTS = 31,	//check if any gameobjects are near
-	CHECK_COLOUR = 32	//check colour of game object
+	CHECK_COLOUR = 32,	//check colour of game object
+	CHANGE_COLOUR = 33	//change tile colour
 };
 
 class VirtualM
