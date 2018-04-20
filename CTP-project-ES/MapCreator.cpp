@@ -30,7 +30,35 @@ void MapCreator::SpawnMap()
 
 void MapCreator::SpawnFood()
 {
-	current_food_id = rand() % map_tiles.size();	
+	bool potential = false;
+	int new_food;
+	int near_dis = 400;
+
+	while (!potential)
+	{
+		potential = true;
+
+		new_food = rand() % map_tiles.size();
+
+		if (map_tiles[current_food_id].getPosition().x < map_tiles[new_food].getPosition().x + near_dis)
+		{
+			if (map_tiles[current_food_id].getPosition().x > map_tiles[new_food].getPosition().x - near_dis)
+			{
+				if (map_tiles[current_food_id].getPosition().y < map_tiles[new_food].getPosition().y + near_dis)
+				{
+					if (map_tiles[current_food_id].getPosition().y > map_tiles[new_food].getPosition().y - near_dis)
+					{
+						if (map_tiles[new_food].getFillColor() != sf::Color::Green)
+						{
+							potential = false;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	current_food_id = new_food;
 
 	map_tiles[current_food_id].setFillColor(sf::Color::Red);
 }

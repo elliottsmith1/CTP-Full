@@ -21,6 +21,7 @@ public:
 
 	void InitShapes();
 	void UpdateUI();
+	void Sight();
 	void Behaviour();
 	void MoveEntity(float _offsetX, float _offsetY);
 	void BoundingBox();

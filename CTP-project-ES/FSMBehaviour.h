@@ -172,23 +172,19 @@ float nearby_food_FSM[]{
 	CONST_I32, 0,
 	GSTORE, counter,
 
-	CLEAR_VEC, 1,
-
-	CHECK_OBJECTS,
-
-	STAT_LOAD, 9,
+	STAT_LOAD, 9, //7
 	CONST_I32, 0,
 	GT_I32,
 	JMPF, 0,
 
-	CONST_I32, counter,
+	CONST_I32, counter, //14
 	GLOAD,
 	CHECK_COLOUR, 
 	CONST_I32, 1,
 	EQ_I32,
-	JMPT, 43,
+	JMPT, 41,
 
-	CONST_I32, counter,
+	CONST_I32, counter, //23
 	GLOAD,
 	CONST_I32, 1,
 	ADD_I32,
@@ -198,9 +194,9 @@ float nearby_food_FSM[]{
 	STAT_LOAD, 9,
 	LT_I32,
 	JMPF, 0,
-	JMP, 17,
+	JMP, 14,
 
-	CONST_I32, 1,
+	CONST_I32, 1, //41
 	STAT_SAVE, 1,
 	CONST_I32, counter,
 	GLOAD,
@@ -211,7 +207,7 @@ float nearby_food_FSM[]{
 	GET_Y_POS,
 	STAT_SAVE, 8,
 
-	CONST_I32, counter,
+	CONST_I32, counter, //57
 	GLOAD,
 	GET_X_POS,
 	STAT_LOAD, 5,
@@ -224,7 +220,7 @@ float nearby_food_FSM[]{
 	CHECK_NEAR,
 	JMPF, 0,
 
-	CONST_I32, counter,
+	CONST_I32, counter, //74
 	GLOAD,
 	CHANGE_COLOUR, 0,
 	CONST_I32, 25,

@@ -25,7 +25,7 @@ void Application::Init()
 	behaviours.push_back(hunger_FSM);
 	behaviours.push_back(target_movement_FSM);
 	behaviours.push_back(random_movement_FSM);
-	//behaviours.push_back(nearby_food_FSM);
+	behaviours.push_back(nearby_food_FSM);
 
 	CreateVirtualMachines();
 }
@@ -85,7 +85,7 @@ void Application::RunVMachines()
 		int state = virtual_machines[i]->GetState();
 		int id = virtual_machines[i]->GetID();
 
-		printf("\n\nVM%d state: %d\n\n", id, state);
+		//printf("\n\nVM%d state: %d\n\n", id, state);
 
 		//entity->InterpretFSM(id, state);		
 		entity->SetStats(virtual_machines[i]->GetStats());

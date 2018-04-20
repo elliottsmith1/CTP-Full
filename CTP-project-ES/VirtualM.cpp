@@ -70,7 +70,7 @@ void VirtualM::Run(VM* _vm)
 			v = NCODE(_vm);   // get next value from code ...
 			PUSH(_vm, v);     // ... and move it on top of the stack
 
-			printf("\nVM# %d: pushing constant float (%.2f)\n", machine_id, v);
+			//printf("\nVM# %d: pushing constant float (%.2f)\n", machine_id, v);
 
 			break;
 
@@ -79,7 +79,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a + b);    // ... add those two values and put result on top of the stack
 
-			printf("\nVM# %d: adding %.2f + %.2f (%.2f)\n", machine_id, a, b, (a + b));
+			//printf("\nVM# %d: adding %.2f + %.2f (%.2f)\n", machine_id, a, b, (a + b));
 
 			break;
 
@@ -88,7 +88,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a - b);    // ... subtract those two values and put result on top of the stack
 
-			printf("\nVM# %d: subtracting %.2f - %.2f (%.2f)\n", machine_id, a, b, (a - b));
+			//printf("\nVM# %d: subtracting %.2f - %.2f (%.2f)\n", machine_id, a, b, (a - b));
 
 			break;
 
@@ -97,7 +97,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, a * b);    // ... multiply those two values and put result on top of the stack
 
-			printf("\nVM# %d: multiplying %.2f * %.2f (%.2f)\n", machine_id, a, b, (a*b));
+			//printf("\nVM# %d: multiplying %.2f * %.2f (%.2f)\n", machine_id, a, b, (a*b));
 
 			break;
 
@@ -106,15 +106,15 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a<b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %.2f less than %.2f?", machine_id, a, b);
+			//printf("\nVM# %d: %.2f less than %.2f?", machine_id, a, b);
 
 			if (a < b)
 			{
-				printf(" (true)\n");
+				//printf(" (true)\n");
 			}
 			else
 			{
-				printf(" (false)\n");
+				//printf(" (false)\n");
 			}
 
 			break;
@@ -124,15 +124,15 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a>b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %.2f greater than %.2f?", machine_id, a, b);
+			//printf("\nVM# %d: %.2f greater than %.2f?", machine_id, a, b);
 
 			if (a > b)
 			{
-				printf(" (true)\n");
+				//printf(" (true)\n");
 			}
 			else
 			{
-				printf(" (false)\n");
+				//printf(" (false)\n");
 			}
 
 			break;
@@ -142,15 +142,15 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);        // ... then get first value from top of the stack ...
 			PUSH(_vm, (a == b) ? 1 : 0); // ... compare those two values, and put result on top of the stack
 
-			printf("\nVM# %d: %.2f equal to %.2f?", machine_id, a, b);
+			//printf("\nVM# %d: %.2f equal to %.2f?", machine_id, a, b);
 
 			if (a == b)
 			{
-				printf(" (true)\n");
+				//printf(" (true)\n");
 			}
 			else
 			{
-				printf(" (false)\n");
+				//printf(" (false)\n");
 			}
 
 			break;
@@ -158,7 +158,7 @@ void VirtualM::Run(VM* _vm)
 		case JMP:
 			addr = NCODE(_vm);  // get address pointer from code ...
 
-			printf("\nVM# %d: jump to opcode instruction: %d\n", machine_id, addr);
+			//printf("\nVM# %d: jump to opcode instruction: %d\n", machine_id, addr);
 
 			_vm->pc = addr; // ... jump with program counter to provided address
 			break;
@@ -169,7 +169,7 @@ void VirtualM::Run(VM* _vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				_vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\nVM# %d: jump true\nopcode: %d\n", machine_id, addr);
+				//printf("\nVM# %d: jump true\nopcode: %d\n", machine_id, addr);
 			}
 
 			break;
@@ -180,7 +180,7 @@ void VirtualM::Run(VM* _vm)
 			{      // ... pop value from top of the stack, and if it's true ...
 				_vm->pc = addr; // ... jump with program counter to provided address
 
-				printf("\nVM# %d: jump false\nopcode: %d\n", machine_id, addr);
+				//printf("\nVM# %d: jump false\nopcode: %d\n", machine_id, addr);
 			}
 
 			break;
@@ -189,14 +189,14 @@ void VirtualM::Run(VM* _vm)
 			offset = NCODE(_vm);     // get next value from code to identify local variables offset start on the stack
 			PUSH(_vm, _vm->stack[_vm->fp + offset]); // ... put on the top of the stack variable stored relatively to frame pointer
 
-			printf("\nVM# %d: local load\n", machine_id);
+			//printf("\nVM# %d: local load\n", machine_id);
 
 			break;
 
 		case S_LOAD:                 // load state
 			PUSH(_vm, state); // ... push current state
 
-			printf("\nVM# %d: pushing current state (%.2f)\n", machine_id, state);
+			//printf("\nVM# %d: pushing current state (%.2f)\n", machine_id, state);
 
 			break;
 
@@ -205,7 +205,7 @@ void VirtualM::Run(VM* _vm)
 			offset = NCODE(_vm);     // ... get the relative pointer address from code ...
 			_vm->locals[_vm->fp + offset] = v;  // ... and store value at address received relatively to frame pointer
 
-			printf("\nVM# %d: store locally\n", machine_id);
+			//printf("\nVM# %d: store locally\n", machine_id);
 
 			break;
 
@@ -213,7 +213,7 @@ void VirtualM::Run(VM* _vm)
 			v = POP(_vm);            // get value from top of the stack ...
 			state = v;
 
-			printf("\nVM# %d: saving state (%.2f)\n", machine_id, v);
+			//printf("\nVM# %d: saving state (%.2f)\n", machine_id, v);
 
 			break;
 
@@ -222,7 +222,7 @@ void VirtualM::Run(VM* _vm)
 			v = _vm->locals[addr];         // ... load value from memory of the provided addres ...
 			PUSH(_vm, v);                // ... and put that value on top of the stack
 
-			printf("\nVM# %d: load global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
+			//printf("\nVM# %d: load global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -231,7 +231,7 @@ void VirtualM::Run(VM* _vm)
 			addr = NCODE(_vm);           // ... get pointer address from code ...
 			_vm->locals[addr] = v;         // ... and store value at address received
 
-			printf("\nVM# %d: store global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
+			//printf("\nVM# %d: store global\nvalue: %.2f\naddress: %d\n", machine_id, v, addr);
 
 			break;
 
@@ -245,7 +245,7 @@ void VirtualM::Run(VM* _vm)
 			_vm->fp = _vm->sp;  // ... set new frame pointer ...
 			_vm->pc = addr;    // ... move instruction pointer to target procedure address
 
-			printf("\nVM# %d: function call\n", machine_id);
+			//printf("\nVM# %d: function call\n", machine_id);
 
 			break;
 
@@ -258,20 +258,20 @@ void VirtualM::Run(VM* _vm)
 			_vm->sp -= argc;     // ... discard all of the args left ...
 			PUSH(_vm, rval);     // ... leave return value on top of the stack
 
-			printf("\nVM# %d: function return\n", machine_id);
+			//printf("\nVM# %d: function return\n", machine_id);
 
 			break;
 
 		case POP:
 			--_vm->sp;      // throw away value at top of the stack
 
-			printf("\nVM# %d: throwing away top of stack\n", machine_id);
+			//printf("\nVM# %d: throwing away top of stack\n", machine_id);
 
 			break;
 
 		case PRINT:
 			v = POP(_vm);        // pop value from top of the stack ...
-			printf("\nVM# %d: Printing top of stack: %.2f\n", machine_id, v);  // ... and print it					
+			//printf("\nVM# %d: Printing top of stack: %.2f\n", machine_id, v);  // ... and print it					
 
 			break;
 
@@ -291,43 +291,43 @@ void VirtualM::Run(VM* _vm)
 			{
 			case 0:
 				PUSH(_vm, stats->food); // ... push current food value
-				printf("\nVM# %d: pushing current food value (%.2f)\n", machine_id, stats->food);
+				//printf("\nVM# %d: pushing current food value (%.2f)\n", machine_id, stats->food);
 				break;
 			case 1:
 				PUSH(_vm, ((int)stats->food_in_sight)); // ... push current food sight bool
-				printf("\nVM# %d: pushing current food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
+				//printf("\nVM# %d: pushing current food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
 				break;
 			case 2:
 				PUSH(_vm, stats->game_objects.size());
-				printf("\nVM# %d: pushing game object vector size (%d)\n", machine_id, stats->game_objects.size());
+				//printf("\nVM# %d: pushing game object vector size (%d)\n", machine_id, stats->game_objects.size());
 				break;
 			case 3:
 				PUSH(_vm, stats->speed); // ... push current speed
-				printf("\nVM# %d: pushing current speed (%.2f)\n", machine_id, stats->speed);
+				//printf("\nVM# %d: pushing current speed (%.2f)\n", machine_id, stats->speed);
 				break;
 			case 4:
 				PUSH(_vm, stats->health); // ... push current health
-				printf("\nVM# %d: pushing current health (%.2f)\n", machine_id, stats->health);
+				//printf("\nVM# %d: pushing current health (%.2f)\n", machine_id, stats->health);
 				break;
 			case 5:
 				PUSH(_vm, stats->pos_x); // ... push current x pos
-				printf("\nVM# %d: pushing current x pos (%.2f)\n", machine_id, stats->pos_x);
+				//printf("\nVM# %d: pushing current x pos (%.2f)\n", machine_id, stats->pos_x);
 				break;
 			case 6:
 				PUSH(_vm, stats->pos_y); // ... push current y pos
-				printf("\nVM# %d: pushing current y pos (%.2f)\n", machine_id, stats->pos_y);
+				//printf("\nVM# %d: pushing current y pos (%.2f)\n", machine_id, stats->pos_y);
 				break;
 			case 7:
 				PUSH(_vm, stats->target_x); // ... push current target x pos
-				printf("\nVM# %d: pushing current x target pos (%.2f)\n", machine_id, stats->target_x);
+				//printf("\nVM# %d: pushing current x target pos (%.2f)\n", machine_id, stats->target_x);
 				break;
 			case 8:
 				PUSH(_vm, stats->target_y); // ... push current target y pos
-				printf("\nVM# %d: pushing current y target pos (%.2f)\n", machine_id, stats->target_y);
+				//printf("\nVM# %d: pushing current y target pos (%.2f)\n", machine_id, stats->target_y);
 				break;
 			case 9:
 				PUSH(_vm, stats->nearby_objects.size());
-				printf("\nVM# %d: pushing nearby object vector size (%d)\n", machine_id, stats->nearby_objects.size());
+				//printf("\nVM# %d: pushing nearby object vector size (%d)\n", machine_id, stats->nearby_objects.size());
 				break;
 			}
 			break;
@@ -341,35 +341,35 @@ void VirtualM::Run(VM* _vm)
 			{
 			case 0:
 				stats->food = a;
-				printf("\nVM# %d: saving food value (%.2f)\n", machine_id, stats->food);
+				//printf("\nVM# %d: saving food value (%.2f)\n", machine_id, stats->food);
 				break;
 			case 1:
 				stats->food_in_sight = a;
-				printf("\nVM# %d: saving food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
+				//printf("\nVM# %d: saving food sight bool (%d)\n", machine_id, ((int)stats->food_in_sight));
 				break;
 			case 3:
 				stats->speed = a;
-				printf("\nVM# %d: saving speed (%.2f)\n", machine_id, stats->speed);
+				//printf("\nVM# %d: saving speed (%.2f)\n", machine_id, stats->speed);
 				break;
 			case 4:
 				stats->health = a;
-				printf("\nVM# %d: saving health (%.2f)\n", machine_id, stats->health);
+				//printf("\nVM# %d: saving health (%.2f)\n", machine_id, stats->health);
 				break;
 			case 5:
 				stats->pos_x = a;
-				printf("\nVM# %d: saving pos x (%.2f)\n", machine_id, stats->pos_x);
+				//printf("\nVM# %d: saving pos x (%.2f)\n", machine_id, stats->pos_x);
 				break;
 			case 6:
 				stats->pos_y = a;
-				printf("\nVM# %d: saving pos y (%.2f)\n", machine_id, stats->pos_y);
+				//printf("\nVM# %d: saving pos y (%.2f)\n", machine_id, stats->pos_y);
 				break;
 			case 7:
 				stats->target_x = a;
-				printf("\nVM# %d: saving target x (%.2f)\n", machine_id, stats->target_x);
+				//printf("\nVM# %d: saving target x (%.2f)\n", machine_id, stats->target_x);
 				break;
 			case 8:
 				stats->target_y = a;
-				printf("\nVM# %d: saving target y (%.2f)\n", machine_id, stats->target_y);
+				//printf("\nVM# %d: saving target y (%.2f)\n", machine_id, stats->target_y);
 				break;
 			}
 			break;
@@ -377,14 +377,14 @@ void VirtualM::Run(VM* _vm)
 		case RAND:
 			v = NCODE(_vm);   // get range from next value			
 			random_num = rand() % (int)v; // get random int between 0 and range max
-			printf("\nVM# %d: pushing random value (%.2f)\n", machine_id, random_num);
+			//printf("\nVM# %d: pushing random value (%.2f)\n", machine_id, random_num);
 			PUSH(_vm, random_num);	//return value
 			break;
 
 		case CHECK_NEAR:
 			b = POP(_vm);        
 			a = POP(_vm);
-			printf("\nVM# %d: check if (%.2f) is near (%.02f) \n", machine_id, a, b);
+			//printf("\nVM# %d: check if (%.2f) is near (%.02f) \n", machine_id, a, b);
 
 			if ((a < (b + 20)) && (a > (b - 20)))
 			{				
@@ -396,73 +396,23 @@ void VirtualM::Run(VM* _vm)
 			}
 			break;
 
-		case CLEAR_VEC:
-			v = NCODE(_vm);   // get id from next value
-
-			switch ((int)v)
-			{
-			case 0:
-				printf("\nVM# %d: clearing game object vector \n", machine_id);
-				stats->game_objects.clear();
-				break;
-			case 1:
-				printf("\nVM# %d: clearing nearby object vector \n", machine_id);
-				stats->nearby_objects.clear();
-				break;
-			}
-			break;
-
 		case GET_X_POS:
 			v = POP(_vm);   // get id from next value
 			x_pos = stats->nearby_objects[v]->getPosition().x;
-			printf("\nVM# %d: pushing x position (%.02f) \n", machine_id, x_pos);
+			//printf("\nVM# %d: pushing x position (%.02f) \n", machine_id, x_pos);
 			PUSH(_vm, x_pos);
 			break;
 
 		case GET_Y_POS:
 			v = POP(_vm);   // get id from next value
 			y_pos = stats->nearby_objects[v]->getPosition().y;
-			printf("\nVM# %d: pushing y position (%.02f) \n", machine_id, y_pos);
+			//printf("\nVM# %d: pushing y position (%.02f) \n", machine_id, y_pos);
 			PUSH(_vm, y_pos);
-			break;
-
-		case VEC_ADD:
-			v = (int)NCODE(_vm);   // get id from next value
-			printf("\nVM# %d: adding game object (%d) to nearby objects\n", machine_id, v);
-			stats->nearby_objects.push_back(stats->game_objects[v]);
-			break;
-
-		case CHECK_OBJECTS:
-			printf("\nVM# %d: %d game objects to check\n", machine_id, stats->game_objects.size());
-			printf("VM# %d: checking for nearby objects\n", machine_id);
-
-			if (stats->game_objects.size() > 0)
-			{
-				for (int i = 0; i < stats->game_objects.size(); i++)
-				{
-					if (stats->pos_x < stats->game_objects[i]->getPosition().x + 65)
-					{
-						if (stats->pos_x > stats->game_objects[i]->getPosition().x - 65)
-						{
-							if (stats->pos_y < stats->game_objects[i]->getPosition().y + 65)
-							{
-								if (stats->pos_y > stats->game_objects[i]->getPosition().y - 65)
-								{
-									stats->nearby_objects.push_back(stats->game_objects[i]);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			printf("VM# %d: found (%d) nearby objects\n", machine_id, stats->nearby_objects.size());
-
 			break;
 
 		case CHECK_COLOUR:
 			v = POP(_vm);   // get id 
-			printf("\nVM# %d: checking (%d) nearby object colour\n", machine_id, v);
+			//printf("\nVM# %d: checking (%d) nearby object colour\n", machine_id, v);
 
 			if (stats->nearby_objects[v]->getFillColor() == sf::Color::Red)
 			{
@@ -480,7 +430,7 @@ void VirtualM::Run(VM* _vm)
 		case CHANGE_COLOUR:					
 			v = POP(_vm);		// get colour id
 			a = NCODE(_vm);   // get id from next value			
-			printf("\nVM# %d: changing nearby object (%d) colour\n", machine_id, v);
+			//printf("\nVM# %d: changing nearby object (%d) colour\n", machine_id, v);
 
 			switch ((int)a)
 			{

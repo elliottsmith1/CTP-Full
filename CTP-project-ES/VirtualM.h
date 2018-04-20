@@ -43,13 +43,10 @@ enum {
 	STAT_SAVE = 24,	// save specific stat
 	RAND = 25,		// return random number in range
 	CHECK_NEAR = 26,// check if nearby
-	CLEAR_VEC = 27,	// clear a vector
-	GET_X_POS= 28,	// get x position
-	GET_Y_POS = 29,	// get y position
-	VEC_ADD = 30,	// add to a vector
-	CHECK_OBJECTS = 31,	//check if any gameobjects are near
-	CHECK_COLOUR = 32,	//check colour of game object
-	CHANGE_COLOUR = 33	//change tile colour
+	GET_X_POS= 27,	// get x position
+	GET_Y_POS = 28,	// get y position
+	CHECK_COLOUR = 29,	//check colour of game object
+	CHANGE_COLOUR = 30	//change tile colour
 };
 
 class VirtualM

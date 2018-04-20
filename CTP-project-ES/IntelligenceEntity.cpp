@@ -104,8 +104,42 @@ void IntelligenceEntity::UpdateUI()
 	health_UI.setScale(1, perc);
 }
 
+void IntelligenceEntity::Sight()
+{
+	stats->nearby_objects.clear();
+
+	if (stats->game_objects.size() > 0)
+	{
+		float sight_value = stats->sight;
+
+		for (int i = 0; i < stats->game_objects.size(); i++)
+		{
+			if (stats->pos_x < stats->game_objects[i]->getPosition().x + sight_value)
+			{
+				if (stats->pos_x > stats->game_objects[i]->getPosition().x - sight_value)
+				{
+					if (stats->pos_y < stats->game_objects[i]->getPosition().y + sight_value)
+					{
+						if (stats->pos_y > stats->game_objects[i]->getPosition().y - sight_value)
+						{
+							stats->nearby_objects.push_back(stats->game_objects[i]);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void IntelligenceEntity::Behaviour()
 {
+	if (stats->food > 100)
+	{
+		stats->food = 100;
+	}
+
+	Sight();
+
 	if (entity_shape.getPosition().y < stats->pos_y)
 	{
 		MoveEntity(0, stats->speed);
@@ -125,50 +159,6 @@ void IntelligenceEntity::Behaviour()
 	{
 		MoveEntity(-stats->speed, 0);
 	}
-
-	
-
-	/*if (stats->food_in_sight)
-	{
-		if (food_pos.x > entity_shape.getPosition().x)
-		{
-			MoveEntity(stats->speed, 0);
-		}
-		if (food_pos.x < entity_shape.getPosition().x)
-		{
-			MoveEntity(-stats->speed, 0);
-		}
-		if (food_pos.y > entity_shape.getPosition().y)
-		{
-			MoveEntity(0, stats->speed);
-		}
-		if (food_pos.y < entity_shape.getPosition().y)
-		{
-			MoveEntity(0, -stats->speed);
-		}
-	}
-
-	else
-	{
-		srand(time(NULL));
-		int random_num = rand() % 4;
-
-		switch (random_num)
-		{
-		case 0:
-			MoveEntity(stats->speed, 0);
-			break;
-		case 1:
-			MoveEntity(-stats->speed, 0);
-			break;
-		case 2:
-			MoveEntity(0, stats->speed);
-			break;
-		case 3:
-			MoveEntity(0, -stats->speed);
-			break;
-		}
-	}*/
 }
 
 void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
