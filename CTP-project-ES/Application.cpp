@@ -26,6 +26,7 @@ void Application::Init()
 	behaviours.push_back(target_movement_FSM);
 	behaviours.push_back(random_movement_FSM);
 	behaviours.push_back(nearby_food_FSM);
+	//behaviours.push_back(thirst_FSM);
 
 	CreateVirtualMachines();
 }

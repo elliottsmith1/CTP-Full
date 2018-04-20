@@ -2,7 +2,7 @@
 
 void MapCreator::SpawnMap()
 {
-	srand(time(NULL));
+	srand(time(NULL)); // get random seed
 
 	float width = 0;
 	float height = 0;
@@ -25,6 +25,8 @@ void MapCreator::SpawnMap()
 		height += 20.0f;
 		width = 0.0f;
 	}
+
+	SpawnWater();
 	SpawnFood();
 }
 
@@ -60,12 +62,51 @@ void MapCreator::SpawnFood()
 
 	current_food_id = new_food;
 
-	map_tiles[current_food_id].setFillColor(sf::Color::Red);
+	map_tiles[current_food_id].setFillColor(sf::Color(255, 102, 0, 255));
+}
+
+void MapCreator::SpawnWater()
+{
+	int near_dis = 25;
+	int water_id = rand() % map_tiles.size();
+
+	map_tiles[water_id].setFillColor(sf::Color::Blue);
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < map_tiles.size(); j++)
+		{
+			if (map_tiles[j].getFillColor() == sf::Color::Blue)
+			{
+				for (int l = 0; l < map_tiles.size(); l++)
+				{
+					if (map_tiles[l].getPosition().x < map_tiles[j].getPosition().x + near_dis)
+					{
+						if (map_tiles[l].getPosition().x > map_tiles[j].getPosition().x - near_dis)
+						{
+							if (map_tiles[l].getPosition().y < map_tiles[j].getPosition().y + near_dis)
+							{
+								if (map_tiles[l].getPosition().y > map_tiles[j].getPosition().y - near_dis)
+								{
+									int spread_chance = rand() % 100;
+
+									if (spread_chance < 15)
+									{
+										map_tiles[l].setFillColor(sf::Color::Blue);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void MapCreator::Update()
 {
-	if (map_tiles[current_food_id].getFillColor() != sf::Color::Red)
+	if (map_tiles[current_food_id].getFillColor() != sf::Color(255, 102, 0, 255))
 	{
 		SpawnFood();
 	}

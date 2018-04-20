@@ -329,6 +329,15 @@ void VirtualM::Run(VM* _vm)
 				PUSH(_vm, stats->nearby_objects.size());
 				//printf("\nVM# %d: pushing nearby object vector size (%d)\n", machine_id, stats->nearby_objects.size());
 				break;
+			case 11:
+				PUSH(_vm, stats->sight);
+				break;
+			case 12:
+				PUSH(_vm, stats->thirst);
+				break;
+			case 13:
+				PUSH(_vm, (int)stats->thirsty);
+				break;
 			}
 			break;
 
@@ -370,6 +379,23 @@ void VirtualM::Run(VM* _vm)
 			case 8:
 				stats->target_y = a;
 				//printf("\nVM# %d: saving target y (%.2f)\n", machine_id, stats->target_y);
+				break;
+			case 11:
+				stats->sight - a;
+				break;
+			case 12:
+				stats->thirst = a;
+				break;
+			case 13:
+				if (a == 0)
+				{
+					stats->thirsty = false;
+				}
+
+				else if (a == 1)
+				{
+					stats->thirsty = true;
+				}				
 				break;
 			}
 			break;
@@ -414,7 +440,7 @@ void VirtualM::Run(VM* _vm)
 			v = POP(_vm);   // get id 
 			//printf("\nVM# %d: checking (%d) nearby object colour\n", machine_id, v);
 
-			if (stats->nearby_objects[v]->getFillColor() == sf::Color::Red)
+			if (stats->nearby_objects[v]->getFillColor() == sf::Color(255, 102, 0, 255))
 			{
 				PUSH(_vm, 1);
 
@@ -425,6 +451,12 @@ void VirtualM::Run(VM* _vm)
 			{
 				PUSH(_vm, 2);
 			}
+
+			else if (stats->nearby_objects[v]->getFillColor() == sf::Color::Blue)
+			{
+				PUSH(_vm, 3);
+			}
+
 			break;
 
 		case CHANGE_COLOUR:					

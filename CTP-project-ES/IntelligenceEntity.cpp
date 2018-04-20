@@ -64,29 +64,44 @@ void IntelligenceEntity::InitShapes()
 	stats->target_y = stats->pos_y;
 
 	//UI
-	health_outline.setSize(sf::Vector2f(18, 40));
-	health_outline.setOutlineColor(sf::Color::Black);
-	health_outline.setOutlineThickness(3);
-	health_outline.setFillColor(sf::Color::Transparent);
-	health_outline.setPosition(385, 185);
-	shape_UI_elements.push_back(&health_outline);
+	int bar_height = 40;
+	int bar_width = 10;
 
-	hunger_outline.setSize(sf::Vector2f(18, 40));
-	hunger_outline.setOutlineColor(sf::Color::Black);
-	hunger_outline.setOutlineThickness(3);
-	hunger_outline.setFillColor(sf::Color::Transparent);
-	hunger_outline.setPosition(407, 185);
-	shape_UI_elements.push_back(&hunger_outline);
-
-	health_UI.setSize(sf::Vector2f(18, 40));
+	health_UI.setSize(sf::Vector2f(bar_width, bar_height));
 	health_UI.setFillColor(sf::Color(255, 0, 0, 255));
 	health_UI.setPosition(385, 185);
 	shape_UI_elements.push_back(&health_UI);
 
-	hunger_UI.setSize(sf::Vector2f(18, 40));
+	hunger_UI.setSize(sf::Vector2f(bar_width, bar_height));
 	hunger_UI.setFillColor(sf::Color(255, 102, 0, 255));
-	hunger_UI.setPosition(407, 185);
+	hunger_UI.setPosition(400, 185);
 	shape_UI_elements.push_back(&hunger_UI);
+
+	thirst_UI.setSize(sf::Vector2f(bar_width, bar_height));
+	thirst_UI.setFillColor(sf::Color(0, 0, 255, 255));
+	thirst_UI.setPosition(415, 185);
+	shape_UI_elements.push_back(&thirst_UI);
+
+	health_outline.setSize(sf::Vector2f(bar_width, bar_height));
+	health_outline.setOutlineColor(sf::Color::Black);
+	health_outline.setOutlineThickness(2);
+	health_outline.setFillColor(sf::Color::Transparent);
+	health_outline.setPosition(385, 185);
+	shape_UI_elements.push_back(&health_outline);
+
+	hunger_outline.setSize(sf::Vector2f(bar_width, bar_height));
+	hunger_outline.setOutlineColor(sf::Color::Black);
+	hunger_outline.setOutlineThickness(2);
+	hunger_outline.setFillColor(sf::Color::Transparent);
+	hunger_outline.setPosition(400, 185);
+	shape_UI_elements.push_back(&hunger_outline);
+
+	thirst_outline.setSize(sf::Vector2f(bar_width, bar_height));
+	thirst_outline.setOutlineColor(sf::Color::Black);
+	thirst_outline.setOutlineThickness(2);
+	thirst_outline.setFillColor(sf::Color::Transparent);
+	thirst_outline.setPosition(415, 185);
+	shape_UI_elements.push_back(&thirst_outline);	
 
 	view.setSize(sf::Vector2f(300, 300));
 	view.setOrigin(150, 150);
@@ -102,6 +117,10 @@ void IntelligenceEntity::UpdateUI()
 	perc = stats->health / 100;
 	perc * 30.0f;
 	health_UI.setScale(1, perc);
+
+	perc = stats->thirst / 100;
+	perc * 30.0f;
+	thirst_UI.setScale(1, perc);
 }
 
 void IntelligenceEntity::Sight()
@@ -138,6 +157,11 @@ void IntelligenceEntity::Behaviour()
 		stats->food = 100;
 	}
 
+	if (stats->thirst > 100)
+	{
+		stats->thirst = 100;
+	}
+
 	Sight();
 
 	if (entity_shape.getPosition().y < stats->pos_y)
@@ -171,6 +195,9 @@ void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 
 	health_outline.move(_offsetX, _offsetY);
 	health_UI.move(_offsetX, _offsetY);
+
+	thirst_outline.move(_offsetX, _offsetY);
+	thirst_UI.move(_offsetX, _offsetY);
 
 	if (_offsetX != 0)
 	{

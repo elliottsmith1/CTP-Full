@@ -33,10 +33,10 @@ float hunger_FSM[] = {
 
 	//state 1
 	//check if food is above 50
-	//set speed to 1
+	//set speed 
 	CONST_I32, 1,
 	S_STORE,
-	CONST_I32, 1,
+	CONST_I32, 0.2,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 50,	
@@ -45,10 +45,10 @@ float hunger_FSM[] = {
 
 	//set state to 2
 	//check if food is above 25
-	//set speed to 1.5
+	//set speed 
 	CONST_I32, 2,
 	S_STORE,
-	CONST_I32, 1.5,
+	CONST_I32, 0.6,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 25,	
@@ -57,10 +57,10 @@ float hunger_FSM[] = {
 
 	//set state to 3
 	//check if food is above 10
-	//set speed to 2
+	//set speed
 	CONST_I32, 3,
 	S_STORE,
-	CONST_I32, 2,
+	CONST_I32, 1,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 10,
@@ -78,7 +78,7 @@ float hunger_FSM[] = {
 	JMPF, 0,
 	CONST_I32, 4,
 	S_STORE,	
-	CONST_I32, 0.5f,
+	CONST_I32, 0.1f,
 	STAT_SAVE, 3,
 	STAT_LOAD, 4,
 	CONST_I32, 1,
@@ -229,4 +229,93 @@ float nearby_food_FSM[]{
 	STAT_SAVE, 0,
 	JMP, 0
 
+};
+
+float thirst_FSM[] = {
+
+	//end loop		
+	S_LOAD,
+	PRINT,
+	HALT,
+
+	STAT_LOAD, 12,	//3
+	CONST_I32, 1,
+	GT_I32,
+	JMPF, 0,
+	STAT_LOAD, 12,
+	CONST_I32, 0.005f,
+	SUB_I32,
+	STAT_SAVE, 12,
+
+	STAT_LOAD, 12,	//17
+	CONST_I32, 20,
+	LT_I32,
+	CONST_I32, 1,
+	STAT_SAVE, 13,
+
+	STAT_LOAD, 13,	//26
+	CONST_I32, 1,
+	EQ_I32,
+	JMPF, 0,
+	
+	CONST_I32, 0,	//33
+	GSTORE, counter,
+
+	STAT_LOAD, 9, //37
+	CONST_I32, 0,
+	GT_I32,
+	JMPF, 0,
+
+	CONST_I32, counter, //44
+	GLOAD,
+	CHECK_COLOUR,
+	CONST_I32, 3,
+	EQ_I32,
+	JMPT, 71,
+
+	CONST_I32, counter, //53
+	GLOAD,
+	CONST_I32, 1,
+	ADD_I32,
+	GSTORE, counter,
+	CONST_I32, counter,
+	GLOAD,
+	STAT_LOAD, 9,
+	LT_I32,
+	JMPF, 0,
+	JMP, 44,
+
+	CONST_I32, counter,	//71
+	GLOAD,
+	GET_X_POS,
+	STAT_SAVE, 7,
+	CONST_I32, counter,
+	GLOAD,
+	GET_Y_POS,
+	STAT_SAVE, 8,
+
+	CONST_I32, counter, //83
+	GLOAD,
+	GET_X_POS,
+	STAT_LOAD, 5,
+	CHECK_NEAR,
+	JMPF, 0,
+	CONST_I32, counter,
+	GLOAD,
+	GET_Y_POS,
+	STAT_LOAD, 6,
+	CHECK_NEAR,
+	JMPF, 0,
+
+	CONST_I32, 0.2,	//101
+	STAT_LOAD, 12,
+	ADD_I32,
+	STAT_SAVE, 12,
+	STAT_LOAD, 12,
+	CONST_I32, 90,
+	GT_I32,
+	JMPF, 0,
+	CONST_I32, 0,
+	STAT_SAVE, 13,
+	JMP, 0
 };

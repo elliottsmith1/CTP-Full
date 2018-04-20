@@ -14,6 +14,7 @@ public:
 
 	void SpawnMap();
 	void SpawnFood();
+	void SpawnWater();
 
 	void Update();
 

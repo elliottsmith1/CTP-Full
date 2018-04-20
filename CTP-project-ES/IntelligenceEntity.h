@@ -32,8 +32,10 @@ public:
 private:
 	sf::RectangleShape health_UI;
 	sf::RectangleShape hunger_UI;
+	sf::RectangleShape thirst_UI;
 	sf::RectangleShape health_outline;
 	sf::RectangleShape hunger_outline;
+	sf::RectangleShape thirst_outline;
 	sf::RectangleShape entity_shape;
 	sf::RectangleShape view;
 
