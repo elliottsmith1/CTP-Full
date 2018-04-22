@@ -160,7 +160,7 @@ void IntelligenceEntity::Behaviour()
 	if (stats->thirst > 100)
 	{
 		stats->thirst = 100;
-	}
+	}	
 
 	Sight();
 
@@ -239,6 +239,9 @@ void IntelligenceEntity::Update()
 
 	if (stats->health < 1)
 	{
+		stats->food = 0;
+		stats->thirst = 0;
+
 		entity_shape.setFillColor(sf::Color::Black);
 	}
 

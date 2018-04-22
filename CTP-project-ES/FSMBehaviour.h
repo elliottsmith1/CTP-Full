@@ -21,10 +21,10 @@ float hunger_FSM[] = {
 
 	//state 0 
 	//check if food is above 90
-	//set speed to not moving
+	//set speed 
 	CONST_I32, 0,
 	S_STORE,
-	CONST_I32, 0,
+	CONST_I32, 0.2,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 90,	
@@ -36,7 +36,7 @@ float hunger_FSM[] = {
 	//set speed 
 	CONST_I32, 1,
 	S_STORE,
-	CONST_I32, 0.2,
+	CONST_I32, 0.4,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 50,	
@@ -60,7 +60,7 @@ float hunger_FSM[] = {
 	//set speed
 	CONST_I32, 3,
 	S_STORE,
-	CONST_I32, 1,
+	CONST_I32, 0.8,
 	STAT_SAVE, 3,
 	STAT_LOAD, 0,
 	CONST_I32, 10,
@@ -70,7 +70,7 @@ float hunger_FSM[] = {
 	//set state to 4
 	//check if food is above 1
 	//if not == starving 
-	//set speed to 0.5
+	//set speed 
 	//deduct health
 	STAT_LOAD, 0,
 	CONST_I32, 1,
@@ -231,6 +231,8 @@ float nearby_food_FSM[]{
 
 };
 
+int t_counter = 0;
+
 float thirst_FSM[] = {
 
 	//end loop		
@@ -238,76 +240,77 @@ float thirst_FSM[] = {
 	PRINT,
 	HALT,
 
-	STAT_LOAD, 12,	//3
+	CONST_I32, 0,
+	GSTORE, t_counter,
+
+	STAT_LOAD, 12,	//7
 	CONST_I32, 1,
 	GT_I32,
 	JMPF, 0,
 	STAT_LOAD, 12,
-	CONST_I32, 0.005f,
+	CONST_I32, 0.01f,
 	SUB_I32,
 	STAT_SAVE, 12,
 
-	STAT_LOAD, 12,	//17
-	CONST_I32, 20,
+	STAT_LOAD, 12,	//21
+	CONST_I32, 35,
 	LT_I32,
+	JMPF, 32,
 	CONST_I32, 1,
 	STAT_SAVE, 13,
 
-	STAT_LOAD, 13,	//26
+	STAT_LOAD, 13,	//32
 	CONST_I32, 1,
 	EQ_I32,
 	JMPF, 0,
-	
-	CONST_I32, 0,	//33
-	GSTORE, counter,
 
-	STAT_LOAD, 9, //37
+	STAT_LOAD, 9, //39
 	CONST_I32, 0,
 	GT_I32,
 	JMPF, 0,
 
-	CONST_I32, counter, //44
+	CONST_I32, t_counter, //46
 	GLOAD,
 	CHECK_COLOUR,
 	CONST_I32, 3,
 	EQ_I32,
-	JMPT, 71,
+	JMPT, 73,
 
-	CONST_I32, counter, //53
+	CONST_I32, t_counter, //55
 	GLOAD,
 	CONST_I32, 1,
 	ADD_I32,
-	GSTORE, counter,
-	CONST_I32, counter,
+	GSTORE, t_counter,
+	CONST_I32, t_counter,
 	GLOAD,
 	STAT_LOAD, 9,
 	LT_I32,
 	JMPF, 0,
-	JMP, 44,
+	JMP, 46,
 
-	CONST_I32, counter,	//71
+	CONST_I32, t_counter,	//73
 	GLOAD,
 	GET_X_POS,
 	STAT_SAVE, 7,
-	CONST_I32, counter,
+	CONST_I32, t_counter,
 	GLOAD,
 	GET_Y_POS,
 	STAT_SAVE, 8,
 
-	CONST_I32, counter, //83
+	CONST_I32, t_counter, //85
 	GLOAD,
 	GET_X_POS,
 	STAT_LOAD, 5,
 	CHECK_NEAR,
 	JMPF, 0,
-	CONST_I32, counter,
+	CONST_I32, t_counter,
 	GLOAD,
 	GET_Y_POS,
 	STAT_LOAD, 6,
 	CHECK_NEAR,
 	JMPF, 0,
 
-	CONST_I32, 0.2,	//101
+	CONST_I32, 0.2,	//103
 	STAT_LOAD, 12,
 	ADD_I32,
 	STAT_SAVE, 12,
