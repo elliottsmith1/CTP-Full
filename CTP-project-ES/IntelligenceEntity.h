@@ -9,15 +9,14 @@ public:
 	IntelligenceEntity();
 	~IntelligenceEntity();
 
-	sf::RectangleShape* GetEntity();
+	sf::RectangleShape GetEntity();
+	sf::RectangleShape* GetEntityShape();
 	sf::RectangleShape GetUI(int _i);
-	sf::RectangleShape* GetView();
+
 	int GetUISize();
 	EntityStats* GetStats();
 
 	void SetStats(EntityStats* _stats);
-	void SetFoodInSight(bool _sight);
-	void SetFoodPos(sf::Vector2f _pos);
 
 	void InitShapes();
 	void UpdateUI();
@@ -27,7 +26,6 @@ public:
 	void BoundingBox();
 	void Update();
 	bool CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2);
-	void NearbyObjects();
 
 private:
 	sf::RectangleShape health_UI;
@@ -37,13 +35,10 @@ private:
 	sf::RectangleShape hunger_outline;
 	sf::RectangleShape thirst_outline;
 	sf::RectangleShape entity_shape;
-	sf::RectangleShape view;
 
 	std::vector<sf::RectangleShape*> shape_UI_elements;
 
 	EntityStats* stats;
-
-	sf::Vector2f food_pos;
 };
 
 #pragma once

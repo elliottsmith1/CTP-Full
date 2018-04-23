@@ -10,6 +10,7 @@
 #include "MapCreator.h"
 #include "VirtualM.h"
 #include "IntelligenceEntity.h"
+#include "Enemy.h"
 #include "FileManager.h"
 
 class Application
@@ -33,6 +34,7 @@ public:
 private:
 	FileManager* file_manager;
 	IntelligenceEntity* entity;
+	Enemy* enemy;
 	MapCreator* map_creator;
 	std::vector<sf::RectangleShape*> game_objects;
 

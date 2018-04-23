@@ -12,7 +12,12 @@ IntelligenceEntity::~IntelligenceEntity()
 	delete stats;
 }
 
-sf::RectangleShape* IntelligenceEntity::GetEntity()
+sf::RectangleShape IntelligenceEntity::GetEntity()
+{
+	return entity_shape;
+}
+
+sf::RectangleShape * IntelligenceEntity::GetEntityShape()
 {
 	return &entity_shape;
 }
@@ -20,11 +25,6 @@ sf::RectangleShape* IntelligenceEntity::GetEntity()
 sf::RectangleShape IntelligenceEntity::GetUI(int _i)
 {
 	return *shape_UI_elements[_i];
-}
-
-sf::RectangleShape* IntelligenceEntity::GetView()
-{
-	return &view;
 }
 
 int IntelligenceEntity::GetUISize()
@@ -42,12 +42,6 @@ void IntelligenceEntity::SetStats(EntityStats * _stats)
 	stats = _stats;
 }
 
-
-void IntelligenceEntity::SetFoodPos(sf::Vector2f _pos)
-{
-	food_pos = _pos;
-}
-
 void IntelligenceEntity::InitShapes()
 {
 	//AI visual representation
@@ -55,7 +49,7 @@ void IntelligenceEntity::InitShapes()
 	entity_shape.setOutlineColor(sf::Color::Black);
 	entity_shape.setOutlineThickness(2);
 	entity_shape.setFillColor(sf::Color::Yellow);
-	entity_shape.setOrigin(20, 20);
+	entity_shape.setOrigin(25, 25);
 	entity_shape.setPosition(400, 200);
 
 	stats->pos_x = entity_shape.getPosition().x;
@@ -69,43 +63,39 @@ void IntelligenceEntity::InitShapes()
 
 	health_UI.setSize(sf::Vector2f(bar_width, bar_height));
 	health_UI.setFillColor(sf::Color(255, 0, 0, 255));
-	health_UI.setPosition(385, 185);
+	health_UI.setPosition(380, 180);
 	shape_UI_elements.push_back(&health_UI);
 
 	hunger_UI.setSize(sf::Vector2f(bar_width, bar_height));
 	hunger_UI.setFillColor(sf::Color(255, 102, 0, 255));
-	hunger_UI.setPosition(400, 185);
+	hunger_UI.setPosition(395, 180);
 	shape_UI_elements.push_back(&hunger_UI);
 
 	thirst_UI.setSize(sf::Vector2f(bar_width, bar_height));
 	thirst_UI.setFillColor(sf::Color(0, 0, 255, 255));
-	thirst_UI.setPosition(415, 185);
+	thirst_UI.setPosition(410, 180);
 	shape_UI_elements.push_back(&thirst_UI);
 
 	health_outline.setSize(sf::Vector2f(bar_width, bar_height));
 	health_outline.setOutlineColor(sf::Color::Black);
 	health_outline.setOutlineThickness(2);
 	health_outline.setFillColor(sf::Color::Transparent);
-	health_outline.setPosition(385, 185);
+	health_outline.setPosition(380, 180);
 	shape_UI_elements.push_back(&health_outline);
 
 	hunger_outline.setSize(sf::Vector2f(bar_width, bar_height));
 	hunger_outline.setOutlineColor(sf::Color::Black);
 	hunger_outline.setOutlineThickness(2);
 	hunger_outline.setFillColor(sf::Color::Transparent);
-	hunger_outline.setPosition(400, 185);
+	hunger_outline.setPosition(395, 180);
 	shape_UI_elements.push_back(&hunger_outline);
 
 	thirst_outline.setSize(sf::Vector2f(bar_width, bar_height));
 	thirst_outline.setOutlineColor(sf::Color::Black);
 	thirst_outline.setOutlineThickness(2);
 	thirst_outline.setFillColor(sf::Color::Transparent);
-	thirst_outline.setPosition(415, 185);
+	thirst_outline.setPosition(410, 180);
 	shape_UI_elements.push_back(&thirst_outline);	
-
-	view.setSize(sf::Vector2f(300, 300));
-	view.setOrigin(150, 150);
-	view.setPosition(400, 200);
 }
 
 void IntelligenceEntity::UpdateUI()
@@ -114,9 +104,12 @@ void IntelligenceEntity::UpdateUI()
 	perc * 30.0f;
 	hunger_UI.setScale(1, perc);
 
-	perc = stats->health / 100;
-	perc * 30.0f;
-	health_UI.setScale(1, perc);
+	if (stats->health > 0)
+	{
+		perc = stats->health / 100;
+		perc * 30.0f;
+		health_UI.setScale(1, perc);
+	}
 
 	perc = stats->thirst / 100;
 	perc * 30.0f;
@@ -162,6 +155,11 @@ void IntelligenceEntity::Behaviour()
 		stats->thirst = 100;
 	}	
 
+	if (stats->health < 0)
+	{
+		stats->health = 0;
+	}
+
 	Sight();
 
 	if (entity_shape.getPosition().y < stats->pos_y)
@@ -188,7 +186,6 @@ void IntelligenceEntity::Behaviour()
 void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 {
 	entity_shape.move(_offsetX, _offsetY);
-	view.move(_offsetX, _offsetY);
 
 	hunger_outline.move(_offsetX, _offsetY);
 	hunger_UI.move(_offsetX, _offsetY);
@@ -249,7 +246,6 @@ void IntelligenceEntity::Update()
 	{
 		Behaviour();
 		BoundingBox();
-		//NearbyObjects();
 	}
 
 }
@@ -264,19 +260,6 @@ bool IntelligenceEntity::CheckCollision(sf::RectangleShape object1, sf::Rectangl
 	return false;
 }
 
-void IntelligenceEntity::NearbyObjects()
-{
-	for (int i = 0; i < stats->nearby_objects.size(); i++)
-	{
-		if (CheckCollision(entity_shape, *stats->game_objects[i]))
-		{
-			if (stats->game_objects[i]->getFillColor() == sf::Color::Red)
-			{
-				stats->game_objects[i]->setFillColor(sf::Color::Green);
-			}
-		}
-	}
-}
 
 
 

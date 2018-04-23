@@ -16,7 +16,7 @@ void Application::Init()
 	float* nearby_food = file_manager->LoadBehaviour("nearby_food_FSM.txt");
 	float* thirst = file_manager->LoadBehaviour("thirst_FSM.txt");
 
-	entity = new IntelligenceEntity;
+	entity = new IntelligenceEntity;	
 
 	map_creator = new MapCreator;
 	map_creator->SpawnMap();
@@ -28,7 +28,12 @@ void Application::Init()
 		entity->GetStats()->game_objects.push_back(game_objects[i]);
 	}
 
-	game_objects.push_back(entity->GetEntity());	
+	enemy = new Enemy(entity);
+
+	game_objects.push_back(enemy->GetEnemyShapes()[0]);
+	game_objects.push_back(enemy->GetEnemyShapes()[1]);
+
+	game_objects.push_back(entity->GetEntityShape());	
 
 	behaviours.push_back(hunger_FSM);
 	behaviours.push_back(target_movement);
@@ -44,6 +49,8 @@ void Application::Update()
 	RunVMachines();
 
 	entity->Update();
+
+	enemy->Update();
 
 	map_creator->Update();
 }
