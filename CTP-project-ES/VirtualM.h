@@ -9,7 +9,7 @@
 
 typedef struct {
 	int* locals;    // local scoped data
-	float* code;      // array od byte codes to be executed
+	float* code;      // array of byte codes to be executed
 	float* stack;     // virtual stack
 	int pc;         // program counter (aka. IP - instruction pointer)
 	int sp;         // stack pointer

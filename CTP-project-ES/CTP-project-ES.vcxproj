@@ -169,6 +169,7 @@
     <ClInclude Include="VirtualM.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="random_movement_FSM.txt" />
     <Text Include="target_movement_FSM.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

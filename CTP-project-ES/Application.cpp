@@ -10,12 +10,8 @@ void Application::Init()
 {
 	file_manager = new FileManager;
 
-	std::vector<float*> behaviour = file_manager->LoadBehaviour("target_movement_FSM.txt");
-
-	for (int i = 0; i < behaviour.size(); i++)
-	{
-		std::cout << behaviour[i] << "\n";
-	}
+	float* target_movement = file_manager->LoadBehaviour("target_movement_FSM.txt");
+	float* random_movement = file_manager->LoadBehaviour("random_movement_FSM.txt");
 
 	entity = new IntelligenceEntity;
 
@@ -31,11 +27,15 @@ void Application::Init()
 
 	game_objects.push_back(entity->GetEntity());
 	
-	behaviours.push_back(hunger_FSM);
-	behaviours.push_back(target_movement_FSM);
-	behaviours.push_back(random_movement_FSM);
-	behaviours.push_back(nearby_food_FSM);
-	behaviours.push_back(thirst_FSM);
+	//behaviours.push_back(hunger_FSM);
+	//behaviours.push_back(target_movement_FSM);
+
+	behaviours.push_back(target_movement);
+	behaviours.push_back(random_movement);
+
+	//behaviours.push_back(random_movement_FSM);
+	//behaviours.push_back(nearby_food_FSM);
+	//behaviours.push_back(thirst_FSM);
 
 	CreateVirtualMachines();
 }

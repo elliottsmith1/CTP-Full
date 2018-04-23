@@ -9,7 +9,7 @@ class FileManager
 public:
 	bool iterateFile(std::string fileName, std::function<void(const std::string &)> callback);
 
-	std::vector<float*> LoadBehaviour(std::string fileName);
+	float* LoadBehaviour(std::string fileName);
 
 private:
 	bool IsNumber(const std::string& s);

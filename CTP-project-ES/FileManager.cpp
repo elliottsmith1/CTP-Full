@@ -24,10 +24,10 @@ bool FileManager::iterateFile(std::string fileName, std::function<void(const std
 	return true;
 }
 
-std::vector<float*> FileManager::LoadBehaviour(std::string fileName)
+float* FileManager::LoadBehaviour(std::string fileName)
 {
 	//std::vector<std::string> behaviour;
-	std::vector<float*> behaviour;
+	std::vector<float> behaviour;
 
 	//Call given lambda function for each line in file
 	bool res = iterateFile(fileName.c_str(), [&](const std::string & str) {
@@ -36,9 +36,9 @@ std::vector<float*> FileManager::LoadBehaviour(std::string fileName)
 		{
 			// Add to vector
 			float num = std::atof(str.c_str());
-			behaviour.push_back(&num);
+			behaviour.push_back(num);
 
-			std::cout << num << "\n";
+			//std::cout << num << "\n";
 		}
 
 		else
@@ -166,13 +166,19 @@ std::vector<float*> FileManager::LoadBehaviour(std::string fileName)
 				num = 30;
 			}
 
-			behaviour.push_back(&num);
-			std::cout << num << "\n";
+			behaviour.push_back(num);
+			//std::cout << num << "\n";
 		}
-
 	});
 
-	return behaviour;
+	float* nums = new float[behaviour.size()];
+
+	for (int i = 0; i < behaviour.size(); i++)
+	{
+		nums[i] = behaviour[i];
+	}
+
+	return nums;
 }
 
 bool FileManager::IsNumber(const std::string & s)
