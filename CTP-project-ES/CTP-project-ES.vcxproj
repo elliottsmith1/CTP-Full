@@ -169,8 +169,11 @@
     <ClInclude Include="VirtualM.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="hunger_FSM.txt" />
+    <Text Include="nearby_food_FSM.txt" />
     <Text Include="random_movement_FSM.txt" />
     <Text Include="target_movement_FSM.txt" />
+    <Text Include="thirst_FSM.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

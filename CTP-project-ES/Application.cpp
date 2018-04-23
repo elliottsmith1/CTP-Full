@@ -12,6 +12,9 @@ void Application::Init()
 
 	float* target_movement = file_manager->LoadBehaviour("target_movement_FSM.txt");
 	float* random_movement = file_manager->LoadBehaviour("random_movement_FSM.txt");
+	float* hunger = file_manager->LoadBehaviour("hunger_FSM.txt");
+	float* nearby_food = file_manager->LoadBehaviour("nearby_food_FSM.txt");
+	float* thirst = file_manager->LoadBehaviour("thirst_FSM.txt");
 
 	entity = new IntelligenceEntity;
 
@@ -25,16 +28,15 @@ void Application::Init()
 		entity->GetStats()->game_objects.push_back(game_objects[i]);
 	}
 
-	game_objects.push_back(entity->GetEntity());
-	
-	//behaviours.push_back(hunger_FSM);
-	//behaviours.push_back(target_movement_FSM);
+	game_objects.push_back(entity->GetEntity());	
 
+	behaviours.push_back(hunger_FSM);
 	behaviours.push_back(target_movement);
 	behaviours.push_back(random_movement);
+	behaviours.push_back(nearby_food);
+	behaviours.push_back(thirst);
 
-	//behaviours.push_back(random_movement_FSM);
-	//behaviours.push_back(nearby_food_FSM);
+
 	//behaviours.push_back(thirst_FSM);
 
 	CreateVirtualMachines();

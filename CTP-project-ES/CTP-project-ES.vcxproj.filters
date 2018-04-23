@@ -64,5 +64,14 @@
     <Text Include="random_movement_FSM.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="hunger_FSM.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="nearby_food_FSM.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="thirst_FSM.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
