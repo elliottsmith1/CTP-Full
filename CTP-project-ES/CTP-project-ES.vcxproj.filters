@@ -79,5 +79,8 @@
     <Text Include="thirst_FSM.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="run_FSM.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -29,5 +29,5 @@ private:
 
 	float speed = 0.1f;
 
-	float sight_value = 150.0f;
+	float sight_value = 200.0f;
 };

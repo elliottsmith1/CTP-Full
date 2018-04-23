@@ -15,22 +15,26 @@ void Application::Init()
 	float* hunger = file_manager->LoadBehaviour("hunger_FSM.txt");
 	float* nearby_food = file_manager->LoadBehaviour("nearby_food_FSM.txt");
 	float* thirst = file_manager->LoadBehaviour("thirst_FSM.txt");
+	float* run = file_manager->LoadBehaviour("run_FSM.txt");
 
 	entity = new IntelligenceEntity;	
 
 	map_creator = new MapCreator;
 	map_creator->SpawnMap();
 
+	enemy = new Enemy(entity);
+
+	
+
 	for (int i = 0; i < map_creator->GetMapSize(); i++)
 	{
 		game_objects.push_back(map_creator->GetTile(i));
 
 		entity->GetStats()->game_objects.push_back(game_objects[i]);
-	}
-
-	enemy = new Enemy(entity);
+	}	
 
 	game_objects.push_back(enemy->GetEnemyShapes()[0]);
+	entity->GetStats()->game_objects.push_back(enemy->GetEnemyShapes()[0]);
 	game_objects.push_back(enemy->GetEnemyShapes()[1]);
 
 	game_objects.push_back(entity->GetEntityShape());	
@@ -40,6 +44,7 @@ void Application::Init()
 	behaviours.push_back(random_movement);
 	behaviours.push_back(nearby_food);
 	behaviours.push_back(thirst);
+	behaviours.push_back(run);
 
 	CreateVirtualMachines();
 }

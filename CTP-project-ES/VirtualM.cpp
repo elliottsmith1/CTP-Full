@@ -457,6 +457,11 @@ void VirtualM::Run(VM* _vm)
 				PUSH(_vm, 3);
 			}
 
+			else if (stats->nearby_objects[v]->getFillColor() == sf::Color::Red)
+			{
+				PUSH(_vm, 4);
+			}
+
 			break;
 
 		case CHANGE_COLOUR:					
