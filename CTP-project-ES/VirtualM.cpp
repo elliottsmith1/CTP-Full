@@ -57,6 +57,8 @@ void VirtualM::Run(VM* _vm)
 	vm->pc = 3;
 
 	do {
+		//printf("%d", _vm->pc);
+
 		int opcode = NCODE(_vm);        // fetch
 		float v, a, b, random_num, x_pos, y_pos;
 		int addr, offset, argc, rval;
@@ -412,7 +414,7 @@ void VirtualM::Run(VM* _vm)
 			a = POP(_vm);
 			//printf("\nVM# %d: check if (%.2f) is near (%.02f) \n", machine_id, a, b);
 
-			if ((a < (b + 20)) && (a > (b - 20)))
+			if ((a < (b + 60)) && (a > (b - 60)))
 			{				
 				PUSH(_vm, 1);
 			}

@@ -111,8 +111,8 @@ void Enemy::NewTarget(float _x_pos, float _y_pos)
 
 void Enemy::RandomTarget()
 {
-	float random_x = rand() % 770;
-	float random_y = rand() % 570;
+	float random_x = rand() % 1475;
+	float random_y = rand() % 975;
 
 	x_target = random_x;
 	y_target = random_y;

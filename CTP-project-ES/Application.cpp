@@ -24,8 +24,6 @@ void Application::Init()
 
 	enemy = new Enemy(entity);
 
-	
-
 	for (int i = 0; i < map_creator->GetMapSize(); i++)
 	{
 		game_objects.push_back(map_creator->GetTile(i));

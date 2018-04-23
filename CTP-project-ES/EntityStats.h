@@ -16,7 +16,7 @@ struct EntityStats
 	float target_y = 500.0f;						// 8
 	std::vector<sf::RectangleShape*> nearby_objects;// 9
 	sf::RectangleShape* food_tile;					// 10
-	float sight = 350.0f;							// 11
+	float sight = 150.0f;							// 11
 	float thirst = 300.0f;							// 12
 	bool thirsty = false;							// 13
 };

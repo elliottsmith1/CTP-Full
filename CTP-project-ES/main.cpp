@@ -10,7 +10,7 @@ int main()
 {
 	Application* app = new Application;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "CTP Virtual Machine");	
+	sf::RenderWindow window(sf::VideoMode(1400, 1000), "CTP Virtual Machine");	
 
 	while (window.isOpen())
 	{

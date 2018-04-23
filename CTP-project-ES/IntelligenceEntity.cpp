@@ -209,24 +209,24 @@ void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 
 void IntelligenceEntity::BoundingBox()
 {
-	if (entity_shape.getPosition().x < 0)
+	if (stats->target_x < 0)
 	{
-		MoveEntity(stats->speed, 0);
+		stats->target_x = 0;
 	}
 
-	if (entity_shape.getPosition().x > 775)
+	if (stats->target_x > 1475)
 	{
-		MoveEntity(-stats->speed, 0);
+		stats->target_x = 1475;
 	}
 
-	if (entity_shape.getPosition().y < 0)
+	if (stats->target_y < 0)
 	{
-		MoveEntity(0, stats->speed);
+		stats->target_y = 0;
 	}
 
-	if (entity_shape.getPosition().y > 575)
+	if (stats->target_y > 975)
 	{
-		MoveEntity(0, -stats->speed);
+		stats->target_x = 975;
 	}
 }
 
