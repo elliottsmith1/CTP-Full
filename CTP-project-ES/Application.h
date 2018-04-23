@@ -10,6 +10,7 @@
 #include "MapCreator.h"
 #include "VirtualM.h"
 #include "IntelligenceEntity.h"
+#include "FileManager.h"
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	int GetGameObjectNum();
 
 private:
+	FileManager* file_manager;
 	IntelligenceEntity* entity;
 	MapCreator* map_creator;
 	std::vector<sf::RectangleShape*> game_objects;

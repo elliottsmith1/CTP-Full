@@ -8,6 +8,15 @@ Application::Application()
 
 void Application::Init()
 {
+	file_manager = new FileManager;
+
+	std::vector<float*> behaviour = file_manager->LoadBehaviour("target_movement_FSM.txt");
+
+	for (int i = 0; i < behaviour.size(); i++)
+	{
+		std::cout << behaviour[i] << "\n";
+	}
+
 	entity = new IntelligenceEntity;
 
 	map_creator = new MapCreator;
