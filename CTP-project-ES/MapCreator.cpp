@@ -27,6 +27,10 @@ void MapCreator::SpawnMap()
 	}
 
 	SpawnWater();
+	SpawnWater();
+	SpawnWater();
+	SpawnWater();
+
 	SpawnFood();
 }
 
@@ -70,7 +74,7 @@ void MapCreator::SpawnWater()
 	int water_num = 0;
 	bool spawn_water = true;
 
-	int max_water = 3;
+	int max_water = 5;
 
 	int near_dis = 25;
 	int water_id = rand() % map_tiles.size();
