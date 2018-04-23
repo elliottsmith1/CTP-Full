@@ -36,9 +36,6 @@ void Application::Init()
 	behaviours.push_back(nearby_food);
 	behaviours.push_back(thirst);
 
-
-	//behaviours.push_back(thirst_FSM);
-
 	CreateVirtualMachines();
 }
 

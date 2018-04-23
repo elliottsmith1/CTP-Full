@@ -67,12 +67,17 @@ void MapCreator::SpawnFood()
 
 void MapCreator::SpawnWater()
 {
+	int water_num = 0;
+	bool spawn_water = true;
+
+	int max_water = 3;
+
 	int near_dis = 25;
 	int water_id = rand() % map_tiles.size();
 
 	map_tiles[water_id].setFillColor(sf::Color::Blue);
 
-	for (int i = 0; i < 3; i++)
+	while (spawn_water)
 	{
 		for (int j = 0; j < map_tiles.size(); j++)
 		{
@@ -92,7 +97,17 @@ void MapCreator::SpawnWater()
 
 									if (spread_chance < 15)
 									{
-										map_tiles[l].setFillColor(sf::Color::Blue);
+										if (water_num < max_water)
+										{
+											map_tiles[l].setFillColor(sf::Color::Blue);
+
+											water_num++;
+										}
+
+										if (water_num >= max_water)
+										{
+											spawn_water = false;
+										}
 									}
 								}
 							}
