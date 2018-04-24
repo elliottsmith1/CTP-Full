@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 
 #include "EntityStats.h"
@@ -12,6 +13,7 @@ public:
 	sf::RectangleShape GetEntity();
 	sf::RectangleShape* GetEntityShape();
 	sf::RectangleShape GetUI(int _i);
+	sf::Text GetName();
 
 	int GetUISize();
 	EntityStats* GetStats();
@@ -35,6 +37,9 @@ private:
 	sf::RectangleShape hunger_outline;
 	sf::RectangleShape thirst_outline;
 	sf::RectangleShape entity_shape;
+	
+	sf::Text name;
+	sf::Font name_font;
 
 	std::vector<sf::RectangleShape*> shape_UI_elements;
 

@@ -39,6 +39,8 @@ int main()
 			window.draw(app->GetUI(i));
 		}
 
+		window.draw(app->GetEntityName());
+
 		window.display();
 	}
 

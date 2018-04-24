@@ -127,6 +127,11 @@ sf::RectangleShape Application::GetUI(int _i)
 	return entity->GetUI(_i);
 }
 
+sf::Text Application::GetEntityName()
+{
+	return entity->GetName();
+}
+
 int Application::GetUISize()
 {
 	return entity->GetUISize();

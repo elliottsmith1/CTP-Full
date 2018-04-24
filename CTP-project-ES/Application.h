@@ -28,6 +28,7 @@ public:
 	MapCreator* GetMapCreator();
 	sf::RectangleShape GetGameObject(int _i);
 	sf::RectangleShape GetUI(int _i);
+	sf::Text GetEntityName();
 	int GetUISize();
 	int GetGameObjectNum();
 

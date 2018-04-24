@@ -26,10 +26,10 @@ void MapCreator::SpawnMap()
 		width = 0.0f;
 	}
 
-	SpawnWater();
-	SpawnWater();
-	SpawnWater();
-	SpawnWater();
+	for (int i = 0; i < num_lakes; i++)
+	{
+		SpawnWater();
+	}
 
 	SpawnFood();
 }
@@ -73,13 +73,23 @@ void MapCreator::SpawnWater()
 {
 	int water_num = 0;
 	bool spawn_water = true;
+	bool empty_space = false;
 
 	int max_water = 5;
 
-	int near_dis = 25;
-	int water_id = rand() % map_tiles.size();
+	int near_dis;
 
-	map_tiles[water_id].setFillColor(sf::Color::Blue);
+	while (!empty_space)
+	{
+		int water_id = rand() % map_tiles.size();
+
+		if (map_tiles[water_id].getFillColor() == sf::Color::Green)
+		{
+			map_tiles[water_id].setFillColor(sf::Color::Blue);
+			empty_space = true;
+			near_dis = map_tiles[water_id].getSize().x + 1;
+		}
+	}
 
 	while (spawn_water)
 	{
@@ -97,20 +107,23 @@ void MapCreator::SpawnWater()
 							{
 								if (map_tiles[l].getPosition().y > map_tiles[j].getPosition().y - near_dis)
 								{
-									int spread_chance = rand() % 100;
-
-									if (spread_chance < 15)
+									if (map_tiles[l].getFillColor() == sf::Color::Green)
 									{
-										if (water_num < max_water)
-										{
-											map_tiles[l].setFillColor(sf::Color::Blue);
+										int spread_chance = rand() % 100;
 
-											water_num++;
-										}
-
-										if (water_num >= max_water)
+										if (spread_chance < 15)
 										{
-											spawn_water = false;
+											if (water_num < max_water)
+											{
+												map_tiles[l].setFillColor(sf::Color::Blue);
+
+												water_num++;
+											}
+
+											if (water_num >= max_water)
+											{
+												spawn_water = false;
+											}
 										}
 									}
 								}

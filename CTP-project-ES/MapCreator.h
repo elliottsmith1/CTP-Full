@@ -28,6 +28,8 @@ private:
 	int grid_width = 70;
 	std::vector<sf::RectangleShape> map_tiles;
 	int current_food_id;
+
+	int num_lakes = 3;
 };
 
 #pragma once

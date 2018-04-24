@@ -27,6 +27,11 @@ sf::RectangleShape IntelligenceEntity::GetUI(int _i)
 	return *shape_UI_elements[_i];
 }
 
+sf::Text IntelligenceEntity::GetName()
+{
+	return name;
+}
+
 int IntelligenceEntity::GetUISize()
 {
 	return shape_UI_elements.size();
@@ -43,7 +48,16 @@ void IntelligenceEntity::SetStats(EntityStats * _stats)
 }
 
 void IntelligenceEntity::InitShapes()
-{
+{	
+	name_font.loadFromFile("Font.ttf");
+
+	name.setString("Cletus");
+	name.setCharacterSize(25);
+	name.setFont(name_font);
+	name.setOutlineColor(sf::Color::Black);
+	name.setOutlineThickness(1);
+	name.setPosition(365, 145);
+
 	//AI visual representation
 	entity_shape.setSize(sf::Vector2f(50, 50));
 	entity_shape.setOutlineColor(sf::Color::Black);
@@ -185,6 +199,8 @@ void IntelligenceEntity::Behaviour()
 
 void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 {
+	name.move(_offsetX, _offsetY);
+
 	entity_shape.move(_offsetX, _offsetY);
 
 	hunger_outline.move(_offsetX, _offsetY);
