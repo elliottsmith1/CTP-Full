@@ -22,22 +22,33 @@ void Application::Init()
 	map_creator = new MapCreator;
 	map_creator->SpawnMap();
 
-	enemy = new Enemy(entity);
+	for (int i = 0; i < num_enemies; i++)
+	{
+		Enemy* enemy = new Enemy(entity);
+		enemies.push_back(enemy);
+	}	
 
 	for (int i = 0; i < map_creator->GetMapSize(); i++)
 	{
 		game_objects.push_back(map_creator->GetTile(i));
 
 		entity->GetStats()->game_objects.push_back(game_objects[i]);
-	}	
+	}		
 
-	game_objects.push_back(enemy->GetEnemyShapes()[0]);
-	entity->GetStats()->game_objects.push_back(enemy->GetEnemyShapes()[0]);
-	game_objects.push_back(enemy->GetEnemyShapes()[1]);
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		game_objects.push_back(enemies[i]->GetEnemyShapes()[0]);
+		entity->GetStats()->game_objects.push_back(enemies[i]->GetEnemyShapes()[0]);
+	}
+
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		game_objects.push_back(enemies[i]->GetEnemyShapes()[1]);
+	}	
 
 	game_objects.push_back(entity->GetEntityShape());	
 
-	behaviours.push_back(hunger_FSM);
+	behaviours.push_back(hunger);
 	behaviours.push_back(target_movement);
 	behaviours.push_back(random_movement);
 	behaviours.push_back(nearby_food);
@@ -49,13 +60,19 @@ void Application::Init()
 
 void Application::Update()
 {
-	RunVMachines();
+	if (entity->GetHealth() > 1)
+	{
+		RunVMachines();
 
-	entity->Update();
+		entity->Update();
 
-	enemy->Update();
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			enemies[i]->Update();
+		}
 
-	map_creator->Update();
+		map_creator->Update();
+	}
 }
 
 void Application::CreateVirtualMachines()

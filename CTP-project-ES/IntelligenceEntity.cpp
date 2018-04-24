@@ -32,6 +32,11 @@ sf::Text IntelligenceEntity::GetName()
 	return name;
 }
 
+float IntelligenceEntity::GetHealth()
+{
+	return stats->health;
+}
+
 int IntelligenceEntity::GetUISize()
 {
 	return shape_UI_elements.size();
@@ -49,8 +54,8 @@ void IntelligenceEntity::SetStats(EntityStats * _stats)
 
 void IntelligenceEntity::InitShapes()
 {	
+	//name
 	name_font.loadFromFile("Font.ttf");
-
 	name.setString("Cletus");
 	name.setCharacterSize(25);
 	name.setFont(name_font);
@@ -114,6 +119,16 @@ void IntelligenceEntity::InitShapes()
 
 void IntelligenceEntity::UpdateUI()
 {
+	if (stats->food > 100)
+	{
+		stats->food = 100;
+	}
+
+	if (stats->thirst > 100)
+	{
+		stats->thirst = 100;
+	}
+
 	float perc = stats->food / 100;
 	perc * 30.0f;
 	hunger_UI.setScale(1, perc);
@@ -159,21 +174,6 @@ void IntelligenceEntity::Sight()
 
 void IntelligenceEntity::Behaviour()
 {
-	if (stats->food > 100)
-	{
-		stats->food = 100;
-	}
-
-	if (stats->thirst > 100)
-	{
-		stats->thirst = 100;
-	}	
-
-	if (stats->health < 0)
-	{
-		stats->health = 0;
-	}
-
 	Sight();
 
 	if (entity_shape.getPosition().y < stats->pos_y)
@@ -255,7 +255,12 @@ void IntelligenceEntity::Update()
 		stats->food = 0;
 		stats->thirst = 0;
 
-		entity_shape.setFillColor(sf::Color::Black);
+		UpdateUI();
+
+		if (entity_shape.getFillColor() != sf::Color::Black)
+		{
+			entity_shape.setFillColor(sf::Color::Black);
+		}
 	}
 
 	else

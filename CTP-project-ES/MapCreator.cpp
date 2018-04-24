@@ -31,10 +31,13 @@ void MapCreator::SpawnMap()
 		SpawnWater();
 	}
 
-	SpawnFood();
+	for (int i = 0; i < num_food; i++)
+	{
+		SpawnFood(i);
+	}
 }
 
-void MapCreator::SpawnFood()
+void MapCreator::SpawnFood(int _id)
 {
 	bool potential = false;
 	int new_food;
@@ -46,17 +49,20 @@ void MapCreator::SpawnFood()
 
 		new_food = rand() % map_tiles.size();
 
-		if (map_tiles[current_food_id].getPosition().x < map_tiles[new_food].getPosition().x + near_dis)
+		for (int i = 0; i < food_ids.size(); i++)
 		{
-			if (map_tiles[current_food_id].getPosition().x > map_tiles[new_food].getPosition().x - near_dis)
+			if (map_tiles[food_ids[i]].getPosition().x < map_tiles[new_food].getPosition().x + near_dis)
 			{
-				if (map_tiles[current_food_id].getPosition().y < map_tiles[new_food].getPosition().y + near_dis)
+				if (map_tiles[food_ids[i]].getPosition().x > map_tiles[new_food].getPosition().x - near_dis)
 				{
-					if (map_tiles[current_food_id].getPosition().y > map_tiles[new_food].getPosition().y - near_dis)
+					if (map_tiles[food_ids[i]].getPosition().y < map_tiles[new_food].getPosition().y + near_dis)
 					{
-						if (map_tiles[new_food].getFillColor() != sf::Color::Green)
+						if (map_tiles[food_ids[i]].getPosition().y > map_tiles[new_food].getPosition().y - near_dis)
 						{
-							potential = false;
+							if (map_tiles[new_food].getFillColor() != sf::Color::Green)
+							{
+								potential = false;
+							}
 						}
 					}
 				}
@@ -64,24 +70,33 @@ void MapCreator::SpawnFood()
 		}
 	}
 
-	current_food_id = new_food;
+	if ((_id >= food_ids.size()) || (food_ids.size() == 0))
+	{
+		food_ids.push_back(new_food);
+	}
 
-	map_tiles[current_food_id].setFillColor(sf::Color(255, 102, 0, 255));
+	else
+	{
+		food_ids[_id] = new_food;
+	}
+
+	map_tiles[new_food].setFillColor(sf::Color(255, 102, 0, 255));
 }
 
 void MapCreator::SpawnWater()
 {
 	int water_num = 0;
+	int water_id; 
 	bool spawn_water = true;
 	bool empty_space = false;
 
-	int max_water = 5;
+	int max_water = 4;
 
 	int near_dis;
 
 	while (!empty_space)
 	{
-		int water_id = rand() % map_tiles.size();
+		water_id = rand() % map_tiles.size();
 
 		if (map_tiles[water_id].getFillColor() == sf::Color::Green)
 		{
@@ -93,38 +108,32 @@ void MapCreator::SpawnWater()
 
 	while (spawn_water)
 	{
-		for (int j = 0; j < map_tiles.size(); j++)
+		for (int l = 0; l < map_tiles.size(); l++)
 		{
-			if (map_tiles[j].getFillColor() == sf::Color::Blue)
+			if (map_tiles[l].getPosition().x < map_tiles[water_id].getPosition().x + near_dis)
 			{
-				for (int l = 0; l < map_tiles.size(); l++)
+				if (map_tiles[l].getPosition().x > map_tiles[water_id].getPosition().x - near_dis)
 				{
-					if (map_tiles[l].getPosition().x < map_tiles[j].getPosition().x + near_dis)
+					if (map_tiles[l].getPosition().y < map_tiles[water_id].getPosition().y + near_dis)
 					{
-						if (map_tiles[l].getPosition().x > map_tiles[j].getPosition().x - near_dis)
+						if (map_tiles[l].getPosition().y > map_tiles[water_id].getPosition().y - near_dis)
 						{
-							if (map_tiles[l].getPosition().y < map_tiles[j].getPosition().y + near_dis)
+							if (map_tiles[l].getFillColor() == sf::Color::Green)
 							{
-								if (map_tiles[l].getPosition().y > map_tiles[j].getPosition().y - near_dis)
+								int spread_chance = rand() % 100;
+
+								if (spread_chance < 15)
 								{
-									if (map_tiles[l].getFillColor() == sf::Color::Green)
+									if (water_num < max_water)
 									{
-										int spread_chance = rand() % 100;
+										map_tiles[l].setFillColor(sf::Color::Blue);
 
-										if (spread_chance < 15)
-										{
-											if (water_num < max_water)
-											{
-												map_tiles[l].setFillColor(sf::Color::Blue);
+										water_num++;
+									}
 
-												water_num++;
-											}
-
-											if (water_num >= max_water)
-											{
-												spawn_water = false;
-											}
-										}
+									if (water_num >= max_water)
+									{
+										spawn_water = false;
 									}
 								}
 							}
@@ -134,19 +143,18 @@ void MapCreator::SpawnWater()
 			}
 		}
 	}
+
 }
 
 void MapCreator::Update()
 {
-	if (map_tiles[current_food_id].getFillColor() != sf::Color(255, 102, 0, 255))
+	for (int i = 0; i < food_ids.size(); i++)
 	{
-		SpawnFood();
+		if (map_tiles[food_ids[i]].getFillColor() != sf::Color(255, 102, 0, 255))
+		{
+			SpawnFood(i);
+		}
 	}
-}
-
-sf::Vector2f MapCreator::GetFoodPos()
-{
-	return map_tiles[current_food_id].getPosition();
 }
 
 int MapCreator::GetMapSize()
@@ -159,7 +167,4 @@ sf::RectangleShape* MapCreator::GetTile(int _i)
 	return &map_tiles[_i];
 }
 
-sf::RectangleShape MapCreator::GetCurrentFood()
-{
-	return map_tiles[current_food_id];
-}
+

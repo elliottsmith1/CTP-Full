@@ -33,9 +33,11 @@ public:
 	int GetGameObjectNum();
 
 private:
+	int num_enemies = 6;
+
 	FileManager* file_manager;
 	IntelligenceEntity* entity;
-	Enemy* enemy;
+	std::vector<Enemy*> enemies;
 	MapCreator* map_creator;
 	std::vector<sf::RectangleShape*> game_objects;
 

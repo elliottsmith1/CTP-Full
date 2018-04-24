@@ -27,7 +27,7 @@ private:
 	float y_target;
 	float x_target;
 
-	float speed = 0.1f;
+	float speed = 0.5f;
 
 	float sight_value = 100.0f;
 };

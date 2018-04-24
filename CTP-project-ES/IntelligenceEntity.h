@@ -14,6 +14,7 @@ public:
 	sf::RectangleShape* GetEntityShape();
 	sf::RectangleShape GetUI(int _i);
 	sf::Text GetName();
+	float GetHealth();
 
 	int GetUISize();
 	EntityStats* GetStats();
