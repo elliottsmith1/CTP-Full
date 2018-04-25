@@ -4,8 +4,6 @@ Enemy::Enemy(IntelligenceEntity* _entity)
 {
 	entity = _entity;
 
-	srand(time(NULL)); // get random seed
-
 	InitShapes();
 
 	RandomTarget();
