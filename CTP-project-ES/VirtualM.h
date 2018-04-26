@@ -55,32 +55,34 @@ public:
 	VirtualM();
 	~VirtualM();
 
-	void Machine(float* _code);
-	void Run(VM* vm);
+	void Machine(float* _code);	//new VM
+	void Run(VM* vm);	//run VM
 
 	VM* newVM(float* _code,    // pointer to table containing a bytecode to be executed  
 		int _pc,             // address of instruction to be invoked as first one - entrypoint/main func
 		int _datasize);
 
-	void delVM(VM* vm);
+	void delVM(VM* vm);	//delete VM
 
+	//getters
 	int GetState();
 	int GetID();
 	VM* GetVM();
 	EntityStats* GetStats();
 
+	//setters
 	void SetStats(EntityStats* _stats);
 	void SetID(int _id);	
 
 private:
 
-	VM* vm;
+	VM* vm;	//virtual machine
 
-	int state = 0;
-	int stack_size = 100;
+	int state = 0;	//state
+	int stack_size = 100;	//stack
 	int machine_id = 0;
 
-	EntityStats* stats;
+	EntityStats* stats;	//entity stat reference
 };
 
 #pragma once

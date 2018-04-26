@@ -16,7 +16,8 @@ VM* VirtualM::newVM(float* _code, int _pc, int _datasize)
 	return vm;
 }
 
-void VirtualM::delVM(VM* _vm) {
+void VirtualM::delVM(VM* _vm) 
+{
 	free(_vm->locals);
 	free(_vm->stack);
 	free(_vm);
@@ -54,6 +55,9 @@ void VirtualM::SetID(int _id)
 
 void VirtualM::Run(VM* _vm) 
 {
+	//this function runs through FSM on VM, interpreting each instruction and executing logic
+	//all debug console lines commented out to improve performance
+
 	vm->pc = 3;
 
 	do {
@@ -493,6 +497,7 @@ void VirtualM::Run(VM* _vm)
 
 VirtualM::VirtualM()
 {
+	//set stat reference
 	stats = new EntityStats;
 }
 

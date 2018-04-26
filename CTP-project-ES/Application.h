@@ -19,13 +19,15 @@ public:
 	Application();
 	~Application() = default;
 
-	void Init();
-	void Update();
-	void CreateVirtualMachines();
-	void CleanUpVMachines();
-	void RunVMachines();
+	void Init();	//used to initialise all obects	
+	void Update();	//game update
+	void CreateVirtualMachines();	//create virtual machines
+	void CleanUpVMachines();	//delete virtual machines when done
+	void RunVMachines();	//update VMs
 
-	MapCreator* GetMapCreator();
+
+	//getters
+	MapCreator* GetMapCreator();	
 	sf::RectangleShape GetGameObject(int _i);
 	sf::RectangleShape GetUI(int _i);
 	sf::Text GetEntityName();
@@ -33,13 +35,13 @@ public:
 	int GetGameObjectNum();
 
 private:
-	int num_enemies = 6;
+	int num_enemies = 6; //number of enemies to spawn
 
-	FileManager* file_manager;
-	IntelligenceEntity* entity;
-	std::vector<Enemy*> enemies;
-	MapCreator* map_creator;
-	std::vector<sf::RectangleShape*> game_objects;
+	FileManager* file_manager;	//used to load FSMs
+	IntelligenceEntity* entity;	//intelligence entity
+	std::vector<Enemy*> enemies;	//enemies
+	MapCreator* map_creator;	//creates map
+	std::vector<sf::RectangleShape*> game_objects; //all game objects
 
 	//FSM programs
 	std::vector<float*> behaviours;

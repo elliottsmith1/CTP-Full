@@ -165,7 +165,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EntityStats.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="FSMBehaviour.h" />
     <ClInclude Include="IntelligenceEntity.h" />
     <ClInclude Include="MapCreator.h" />
     <ClInclude Include="VirtualM.h" />

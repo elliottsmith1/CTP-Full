@@ -2,6 +2,7 @@
 
 IntelligenceEntity::IntelligenceEntity()
 {	
+	//initialise starting values
 	stats = new EntityStats;
 
 	InitShapes();
@@ -119,6 +120,7 @@ void IntelligenceEntity::InitShapes()
 
 void IntelligenceEntity::UpdateUI()
 {
+	//keep stats in range
 	if (stats->food > 100)
 	{
 		stats->food = 100;
@@ -129,6 +131,7 @@ void IntelligenceEntity::UpdateUI()
 		stats->thirst = 100;
 	}
 
+	//update stat bars
 	float perc = stats->food / 100;
 	perc * 30.0f;
 	hunger_UI.setScale(1, perc);
@@ -147,8 +150,11 @@ void IntelligenceEntity::UpdateUI()
 
 void IntelligenceEntity::Sight()
 {
+	//clear last update's nearby objects
 	stats->nearby_objects.clear();
 
+	//check which game objects are in range
+	//add to vector
 	if (stats->game_objects.size() > 0)
 	{
 		float sight_value = stats->sight;
@@ -176,6 +182,7 @@ void IntelligenceEntity::Behaviour()
 {
 	Sight();
 
+	//update shape position to recorded position
 	if (entity_shape.getPosition().y < stats->pos_y)
 	{
 		MoveEntity(0, stats->speed);
@@ -199,6 +206,7 @@ void IntelligenceEntity::Behaviour()
 
 void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 {
+	//move all shapes together
 	name.move(_offsetX, _offsetY);
 
 	entity_shape.move(_offsetX, _offsetY);
@@ -212,6 +220,7 @@ void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 	thirst_outline.move(_offsetX, _offsetY);
 	thirst_UI.move(_offsetX, _offsetY);
 
+	//update position
 	if (_offsetX != 0)
 	{
 		stats->pos_x = entity_shape.getPosition().x;
@@ -225,6 +234,7 @@ void IntelligenceEntity::MoveEntity(float _offsetX, float _offsetY)
 
 void IntelligenceEntity::BoundingBox()
 {
+	//keep in range
 	if (stats->target_x < 0)
 	{
 		stats->target_x = 0;
@@ -250,6 +260,8 @@ void IntelligenceEntity::Update()
 {
 	UpdateUI();
 
+	//if dead
+	//kill entity shapes
 	if (stats->health < 1)
 	{
 		stats->food = 0;
@@ -263,23 +275,14 @@ void IntelligenceEntity::Update()
 		}
 	}
 
+	//otherwise execute behaviour
 	else
 	{
 		Behaviour();
 		BoundingBox();
 	}
-
 }
 
-bool IntelligenceEntity::CheckCollision(sf::RectangleShape object1, sf::RectangleShape object2)
-{
-	if (object1.getGlobalBounds().intersects(object2.getGlobalBounds()))
-	{
-		return true;
-	}
-
-	return false;
-}
 
 
 

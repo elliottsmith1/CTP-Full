@@ -7,13 +7,10 @@
 class FileManager
 {
 public:
-	bool iterateFile(std::string fileName, std::function<void(const std::string &)> callback);
+	bool iterateFile(std::string fileName, std::function<void(const std::string &)> callback);	//read through file
 
-	float* LoadBehaviour(std::string fileName);
+	float* LoadBehaviour(std::string fileName);	//load FSM
 
 private:
-	bool IsNumber(const std::string& s);
-
-	std::vector<std::vector<float>> behaviours;
-
+	bool IsNumber(const std::string& s);	//check if line is a number
 };

@@ -1,5 +1,11 @@
 #include "FileManager.h"
 
+/////////////////////////////////////////////////////////////////////////////
+// Tutorial used for this class can be found at: ////////////////////////////
+// thispointer.com/c-how-to-read-a-file-line-by-line-into-a-vector/ /////////
+/////////////////////////////////////////////////////////////////////////////
+
+
 bool FileManager::iterateFile(std::string fileName, std::function<void(const std::string&)> callback)
 {
 	// Open the File
@@ -37,10 +43,9 @@ float* FileManager::LoadBehaviour(std::string fileName)
 			// Add to vector
 			float num = std::atof(str.c_str());
 			behaviour.push_back(num);
-
-			//std::cout << num << "\n";
 		}
 
+		//if not a number then interpret the line into float
 		else
 		{
 			float num;
@@ -178,11 +183,13 @@ float* FileManager::LoadBehaviour(std::string fileName)
 		nums[i] = behaviour[i];
 	}
 
+	//return FSM as float array
 	return nums;
 }
 
 bool FileManager::IsNumber(const std::string & s)
 {
+	//used to check if line in file is a number
 	try
 	{
 		std::stod(s);

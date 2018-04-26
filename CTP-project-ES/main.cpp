@@ -8,8 +8,10 @@
 
 int main()
 {
+	//application runs the system
 	Application* app = new Application;
 
+	//render window
 	sf::RenderWindow window(sf::VideoMode(1400, 1000), "CTP Virtual Machine");	
 
 	while (window.isOpen())
@@ -27,8 +29,10 @@ int main()
 
 		window.clear(sf::Color::Black);
 
+		//game update
 		app->Update();			
 
+		//draw objects
 		for (int i = 0; i < app->GetGameObjectNum(); i++)
 		{
 			window.draw(app->GetGameObject(i));			

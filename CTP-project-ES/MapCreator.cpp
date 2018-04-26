@@ -4,13 +4,14 @@ void MapCreator::SpawnMap()
 {
 	srand(time(NULL)); // get random seed
 
+	//spawn map tiles
 	float width = 0;
 	float height = 0;
-
 	for (int i = 0; i < grid_height; i++)
 	{
 		for (int j = 0; j < grid_width; j++)
 		{
+			//tile shape
 			sf::RectangleShape shape;
 			shape.setSize(sf::Vector2f(20, 20));
 			shape.setOutlineColor(sf::Color::Black);
@@ -26,6 +27,7 @@ void MapCreator::SpawnMap()
 		width = 0.0f;
 	}
 
+	//spawn lakes and food tiles
 	for (int i = 0; i < num_lakes; i++)
 	{
 		SpawnWater();
@@ -47,8 +49,10 @@ void MapCreator::SpawnFood(int _id)
 	{
 		potential = true;
 
+		//pick random spot
 		new_food = rand() % map_tiles.size();
 
+		//spawn if not near other food and tile is free
 		for (int i = 0; i < food_ids.size(); i++)
 		{
 			if (map_tiles[food_ids[i]].getPosition().x < map_tiles[new_food].getPosition().x + near_dis)
@@ -70,11 +74,13 @@ void MapCreator::SpawnFood(int _id)
 		}
 	}
 
+	//if new food then add to vector
 	if ((_id >= food_ids.size()) || (food_ids.size() == 0))
 	{
 		food_ids.push_back(new_food);
 	}
 
+	//update vector
 	else
 	{
 		food_ids[_id] = new_food;
@@ -94,6 +100,7 @@ void MapCreator::SpawnWater()
 
 	int near_dis;
 
+	//set random empty tile to water
 	while (!empty_space)
 	{
 		water_id = rand() % map_tiles.size();
@@ -106,6 +113,7 @@ void MapCreator::SpawnWater()
 		}
 	}
 
+	//set nearby tiles to water to 'spread' lake size
 	while (spawn_water)
 	{
 		for (int l = 0; l < map_tiles.size(); l++)
@@ -148,6 +156,8 @@ void MapCreator::SpawnWater()
 
 void MapCreator::Update()
 {
+	//check if food collected
+	//set new position
 	for (int i = 0; i < food_ids.size(); i++)
 	{
 		if (map_tiles[food_ids[i]].getFillColor() != sf::Color(255, 102, 0, 255))

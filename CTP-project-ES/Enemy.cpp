@@ -11,9 +11,11 @@ Enemy::Enemy(IntelligenceEntity* _entity)
 
 void Enemy::InitShapes()
 {
+	//random spawn point
 	float spawn_x = rand() % 1375;
 	float spawn_y = rand() % 975;
 
+	//shape initialisation
 	enemy_shape.setSize(sf::Vector2f(30, 30));
 	enemy_shape.setOutlineColor(sf::Color::Black);
 	enemy_shape.setOutlineThickness(2);
@@ -34,16 +36,19 @@ void Enemy::InitShapes()
 
 void Enemy::MoveEnemy(float _offsetX, float _offsetY)
 {
+	//move shapes
 	enemy_shape.move(_offsetX, _offsetY);	
 	enemy_shape_2.move(_offsetX, _offsetY);
 }
 
 void Enemy::Update()
 {
+	//spin to look scary
 	float spin_speed = 5;
 	enemy_shape.rotate(spin_speed);
 	enemy_shape_2.rotate(spin_speed);
 
+	//if not near to target position, move to target position
 	if (enemy_shape.getPosition().y < y_target)
 	{
 		MoveEnemy(0, speed);
@@ -64,6 +69,7 @@ void Enemy::Update()
 		MoveEnemy(-speed, 0);
 	}
 
+	//if near target position, new random target 
 	float near_value = 5.0f;
 
 	if (enemy_shape.getPosition().x < x_target + near_value)
@@ -80,6 +86,7 @@ void Enemy::Update()
 		}
 	}	
 
+	//if near entity, set target position to chase
 	if (enemy_shape.getPosition().x < entity->GetEntity().getPosition().x + sight_value)
 	{
 		if (enemy_shape.getPosition().x > entity->GetEntity().getPosition().x - sight_value)
@@ -95,6 +102,7 @@ void Enemy::Update()
 		}
 	}
 
+	//if hitting entity, damage
 	if (enemy_shape.getGlobalBounds().intersects(entity->GetEntity().getGlobalBounds()))
 	{
 		float damaged_health = entity->GetStats()->health;
@@ -106,12 +114,14 @@ void Enemy::Update()
 
 void Enemy::NewTarget(float _x_pos, float _y_pos)
 {
+	//new target pos
 	x_target = _x_pos;
 	y_target = _y_pos;
 }
 
 void Enemy::RandomTarget()
 {
+	//random target pos
 	float random_x = rand() % 1375;
 	float random_y = rand() % 975;
 
